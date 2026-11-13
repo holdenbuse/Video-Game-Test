@@ -174,7 +174,7 @@ Chapter 1 places its only boss in the childhood garden, then continues through t
 
 ### 7.1 Camera
 
-Use a fully 3D isometric-style camera. The player can rotate it and zoom within limits. During ordinary exploration the view stays on Orin and follows them while they walk. Middle-drag, the arrow keys, and the on-screen pad pan the view away from Orin and leave it there. The Orin button, or C, sticks the view back on Orin, including while they walk. That is the prototype answer to Q-030.
+Use a fully 3D isometric-style camera. The player can rotate it and zoom within limits. During ordinary exploration the view stays on Orin and follows them while they walk. Drag with the left mouse button, or use the on-screen pad, to pan the view away from Orin. Drag with the right button to turn it, and scroll to zoom. The Orin button sticks the view back, including while they walk. Keyboard shortcuts are optional. Exploration and the Garden Guardian tutorial can both be played with the mouse alone. That is the prototype answer to Q-030.
 
 ### 7.2 Movement
 
@@ -579,7 +579,7 @@ Answer these before the milestone that would otherwise invent the answer. Milest
 | Q-027 | Is Mira's failed protection the same event as her final-battle death? | That later chapter |
 | Q-028 | In which chapters do Arthur and the Old Stranger first appear? | Those chapters |
 | Q-029 | Who is the antagonist? Do not answer this in early content. | The intended reveal only |
-| Q-030 | Resolved for the prototype on 2026-11-13. The player may pan the garden view at any time. The view follows Orin until that pan, and recenter sticks it back. See §7.1. | Resolved |
+| Q-030 | Resolved for the prototype on 2026-11-13. The player may pan the garden view with the mouse at any time. The view follows Orin until that pan, and recenter sticks it back. Keyboard shortcuts are optional. See §7.1. | Resolved |
 | Q-031 | Is any movement control required besides click-to-move? | Movement implementation |
 | Q-032 | Confirm that the childhood garden party is Orin alone. | Garden combat |
 | Q-033 | How much catch-up XP do Chapters 9 and 10 contain? | Those reward tables |

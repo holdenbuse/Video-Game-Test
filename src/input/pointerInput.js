@@ -2,6 +2,7 @@ export function createPointerInput(dom, handlers) {
   let rightDrag = false;
   let middleDrag = false;
   let leftDown = false;
+  let leftDrag = false;
   let downX = 0;
   let downY = 0;
   const held = new Set();
@@ -22,6 +23,7 @@ export function createPointerInput(dom, handlers) {
     }
     if (event.button === 0) {
       leftDown = true;
+      leftDrag = false;
       downX = event.clientX;
       downY = event.clientY;
     }
@@ -35,15 +37,29 @@ export function createPointerInput(dom, handlers) {
     }
     if (event.button === 0 && leftDown) {
       leftDown = false;
-      const dx = event.clientX - downX;
-      const dy = event.clientY - downY;
-      if (dx * dx + dy * dy <= 25) handlers.onClick(event.clientX, event.clientY);
+      const dragged = leftDrag;
+      leftDrag = false;
+      if (!dragged) handlers.onClick(event.clientX, event.clientY);
+      else dom.style.cursor = 'default';
     }
   });
 
   dom.addEventListener('pointermove', (event) => {
-    if (middleDrag) handlers.onPan(event.movementX, event.movementY);
-    else if (rightDrag) handlers.onRotate(event.movementX * 0.005);
+    if (middleDrag || leftDrag) {
+      handlers.onPan(event.movementX, event.movementY);
+      return;
+    }
+    if (leftDown) {
+      const dx = event.clientX - downX;
+      const dy = event.clientY - downY;
+      if (dx * dx + dy * dy > 25) {
+        leftDrag = true;
+        dom.style.cursor = 'grabbing';
+        handlers.onPan(event.movementX, event.movementY);
+        return;
+      }
+    }
+    if (rightDrag) handlers.onRotate(event.movementX * 0.005);
     else handlers.onHover(event.clientX, event.clientY);
   });
 

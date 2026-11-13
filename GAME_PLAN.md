@@ -199,15 +199,17 @@ Built and checked in the browser on 2026-11-13.
 
 Implement Petal Streams: interactive objects, magical energy connections, visible feedback, success detection, a reset control, and a stored completion state.
 
-The playable puzzle is a labeled prototype on the north-west lawn. Click a flower to turn it. The in-world sign states the objective. The round stone resets the flowers. The first solution shows "Petal Streams complete." Solving again says it is already complete and does not grant that result a second time. The flag lasts for the browser session. Save slots are a later milestone. Completing Petal Streams does not start the Garden Guardian.
+The playable puzzle is a labeled prototype on the north-west lawn. Click a flower to turn it. The in-world sign states the objective. The round stone resets the flowers. The first solution shows "Petal Streams complete." Solving again says it is already complete and does not grant that result a second time. The flag lasts for the browser session. Save slots are a later milestone. Milestone 2 left the fight unstarted. Milestone 3 starts Encounter 1 from that first completion.
 
-**Camera change requested with this milestone:** The view follows Orin until the player moves it. Middle-drag, the arrow keys, and the pad pan across the garden. C, or the Orin button, sticks the view back on Orin and follows them again.
+**Camera change requested with this milestone:** The view follows Orin until the player moves it. Left-drag or the pad pans across the garden. The Orin button sticks the view back on Orin and follows them again. Arrow keys are optional, not required.
 
 **Success condition:** The player can solve the puzzle, see confirmation, and keep exploring.
 
 Do not require the other puzzles or combat. Do not award repeatable XP.
 
 ### Milestone 3 — Basic combat
+
+Built and checked in the browser on 2026-11-13.
 
 Implement the Garden Guardian tutorial: visible initiative, 4 AP each turn, movement, basic attacks, the starting magical abilities needed for the tutorial, health, enemy turns, a victory condition, and short tutorial UI.
 
@@ -281,7 +283,11 @@ The prototype should eventually be playable through a browser link and must buil
 | TD-010 | 2026-11-13 | `vercel.json` sets the Vite framework, `dist` output, and the single-page rewrite. Node 22 is requested in `package.json`. | The GitHub Vercel check failed on the garden commit. The deployment logs are private, so the project now states the build settings explicitly. This does not authorize a separate manual deploy. |
 | TD-011 | 2026-11-13 | The Vercel check on `1ed8711` completed successfully. | Confirms the explicit Vite settings produce a deployment. The preview remains the one created by the existing GitHub integration. |
 | TD-012 | 2026-11-13 | The exploration camera follows Orin until the player pans. Middle-drag, the arrow keys, and the on-screen pad move the view away. Recenter sticks it back on Orin, including while they walk. | The owner asked to move the view away from the character and to keep it on them. This answers Q-030 for the prototype. |
-| TD-013 | 2026-11-13 | Petal Streams ships as a labeled prototype layout. Clicking a flower turns it. The session completion flag refuses a second reward and does not start combat. Refreshing the page clears it until save slots exist. | The final layout is still Q-013. Milestone 2 must not start the Garden Guardian or grant a repeatable reward. |
+| TD-013 | 2026-11-13 | Petal Streams ships as a labeled prototype layout. Clicking a flower turns it. The session completion flag refuses a second reward. Refreshing the page clears it until save slots exist. | The final layout is still Q-013. Milestone 2 does not grant a repeatable reward. Starting the fight waited for Milestone 3. |
+| TD-014 | 2026-11-13 | Left-drag, the on-screen pad, right-drag, and the scroll wheel cover view movement, turning, and zoom. The Orin button recenters. Arrow keys remain optional shortcuts. | The owner asked that nothing require the keyboard. Combat actions are clicks as well. |
+| TD-015 | 2026-11-13 | Encounter 1 uses placeholder health, damage, range, movement, and cooldown numbers in `src/data/abilities.js`. | Q-015 is still open. The 4 AP turn, cooldown on magic, and no cooldown on basic attacks are the established rules. |
+| TD-016 | 2026-11-13 | The first puzzle completion starts the Garden Guardian tutorial. With only Petal Streams in the build, finishing it is that first completion. Winning clears Encounter 1 once. Losing offers a retry and does not advance the story. | Completion count, not puzzle identity, selects the encounter. Encounter 2 and the boss are not started. |
+| TD-017 | 2026-11-13 | The tutorial encounter sets opportunity attacks off until that system is built. | The rule still exists. This fight does not pretend the warning is unnecessary. |
 
 ## 7.1 Consistency review (2026-11-13)
 

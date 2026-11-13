@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { createIsometricCamera } from '../camera/isometricCamera.js';
 import { createOrin } from '../characters/createOrin.js';
+import { createCombatSession } from '../combat/combat.js';
+import { createCombatView } from '../combat/combatView.js';
 import { AGENT_RADIUS, GARDEN } from '../data/gardenLayout.js';
 import { PETAL_STREAMS } from '../data/petalStreamsLayout.js';
 import { createPointerInput } from '../input/pointerInput.js';
@@ -11,6 +13,7 @@ import { createNavGrid, rasterizeBlocks } from '../movement/navGrid.js';
 import { createCompletionLog } from '../puzzles/completionLog.js';
 import { createPetalStreams } from '../puzzles/createPetalStreams.js';
 import { createRenderer, createSceneLights } from '../rendering/createRenderer.js';
+import { createCombatHud } from '../ui/combatHud.js';
 import { createHud } from '../ui/hud.js';
 import { createDestinationMarker } from '../world/destinationMarker.js';
 import { createGarden } from '../world/createGarden.js';
@@ -48,6 +51,55 @@ export function createGame(host) {
     view.recenter(movement.state.x, 0.9, movement.state.z);
   }
 
+  const combat = createCombatSession(nav);
+  const combatView = createCombatView(world);
+
+  function refreshCombat(result) {
+    const snapshot = combat.snapshot();
+    combatHud.render(snapshot);
+    combatView.render(snapshot);
+    if (snapshot.phase === 'fighting' || snapshot.phase === 'victory' || snapshot.phase === 'defeat') {
+      const orinFighter = snapshot.fighters.find((fighter) => fighter.id === 'orin');
+      const guardian = snapshot.fighters.find((fighter) => fighter.id === 'garden-guardian');
+      movement.cancel();
+      movement.state.x = orinFighter.x;
+      movement.state.z = orinFighter.z;
+      if (guardian && guardian.hp > 0) {
+        movement.state.yaw = Math.atan2(guardian.x - orinFighter.x, guardian.z - orinFighter.z);
+      }
+    }
+    if (result?.pendingEnemy) {
+      window.setTimeout(() => {
+        combat.runEnemyTurn();
+        refreshCombat();
+      }, 800);
+    }
+  }
+
+  const combatHud = createCombatHud({
+    onContinue: () => {
+      combat.acknowledge();
+      refreshCombat();
+    },
+    onBegin: () => {
+      combat.begin();
+      const orinFighter = combat.snapshot().fighters.find((fighter) => fighter.id === 'orin');
+      view.recenter(orinFighter.x, 0.9, orinFighter.z);
+      refreshCombat();
+    },
+    onRetry: () => {
+      combat.retry();
+      refreshCombat();
+    },
+    onLeave: () => {
+      combat.leave();
+      refreshCombat();
+    },
+    onAbility: (id) => refreshCombat(combat.selectAbility(id)),
+    onConfirmMove: () => refreshCombat(combat.confirmMove()),
+    onEndTurn: () => refreshCombat(combat.endTurn()),
+  });
+
   const hud = createHud({
     onRotate: (radians) => view.rotate(radians),
     onZoom: (amount) => view.zoom(amount),
@@ -84,14 +136,44 @@ export function createGame(host) {
     else marker.show(result.x, result.z, 'go');
   }
 
+  function onCombatClick(hits) {
+    const snapshot = combat.snapshot();
+    if (snapshot.selectedAbility) {
+      for (const hit of hits) {
+        const id = findInteractableId(hit.object);
+        if (id?.startsWith('fighter:')) {
+          refreshCombat(combat.useOn(id.slice('fighter:'.length)));
+          return;
+        }
+      }
+    }
+    const ground = hits.find((hit) => hit.object.userData.walkSurface);
+    if (!ground) return;
+    const choice = snapshot.destinations.reduce((best, cell) => {
+      const distance = Math.hypot(cell.x - ground.point.x, cell.z - ground.point.z);
+      if (!best || distance < best.distance) return { cell, distance };
+      return best;
+    }, null);
+    if (!choice || choice.distance > 0.6) return;
+    refreshCombat(combat.previewMove(choice.cell.x, choice.cell.z));
+  }
+
   function onClick(clientX, clientY) {
     const hits = pickFromPointer(view.camera, world, renderer.domElement, clientX, clientY);
     if (hits.length === 0) return;
+    const phase = combat.snapshot().phase;
+    if (phase === 'fighting') {
+      onCombatClick(hits);
+      return;
+    }
+    if (phase === 'victory' || phase === 'defeat') return;
     const interactableId = findInteractableId(hits[0].object);
     if (interactableId && interactableId.startsWith('petal:')) {
       const outcome = puzzle.activate(interactableId);
       if (outcome?.type === 'complete') {
         hud.showMessage(outcome.first ? PETAL_COMPLETE : PETAL_ALREADY);
+        if (outcome.first) combat.arm();
+        refreshCombat();
       }
       return;
     }
@@ -191,6 +273,9 @@ export function createGame(host) {
       },
       puzzle() {
         return puzzle.debug();
+      },
+      combat() {
+        return combat.snapshot();
       },
       toast() {
         return document.querySelector('#toast')?.textContent ?? '';

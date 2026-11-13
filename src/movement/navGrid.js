@@ -200,6 +200,54 @@ export function createNavGrid({ width, depth, cellSize }) {
     return { status: 'ok', points: smooth(fromX, fromZ, points) };
   }
 
+  function reachable(fromX, fromZ, maxDistance) {
+    const start = worldToCell(fromX, fromZ);
+    if (!inBounds(start.c, start.r) || blocked[index(start.c, start.r)]) return [];
+    const startKey = keyOf(start.c, start.r);
+    const gScore = new Map([[startKey, 0]]);
+    const queue = [startKey];
+    let cursor = 0;
+    const directions = [
+      [1, 0, 1],
+      [-1, 0, 1],
+      [0, 1, 1],
+      [0, -1, 1],
+      [1, 1, Math.SQRT2],
+      [1, -1, Math.SQRT2],
+      [-1, 1, Math.SQRT2],
+      [-1, -1, Math.SQRT2],
+    ];
+    const maxG = maxDistance / cellSize;
+    while (cursor < queue.length) {
+      const currentKey = queue[cursor];
+      cursor += 1;
+      const cell = decode(currentKey);
+      const currentG = gScore.get(currentKey);
+      for (const [dc, dr, cost] of directions) {
+        const nextC = cell.c + dc;
+        const nextR = cell.r + dr;
+        if (!inBounds(nextC, nextR) || blocked[index(nextC, nextR)]) continue;
+        if (dc !== 0 && dr !== 0) {
+          if (blocked[index(cell.c + dc, cell.r)] || blocked[index(cell.c, cell.r + dr)]) continue;
+        }
+        const tentative = currentG + cost;
+        if (tentative > maxG + 1e-6) continue;
+        const nextKey = keyOf(nextC, nextR);
+        if (tentative >= (gScore.get(nextKey) ?? Infinity)) continue;
+        gScore.set(nextKey, tentative);
+        queue.push(nextKey);
+      }
+    }
+    const cells = [];
+    for (const [key, g] of gScore) {
+      if (key === startKey) continue;
+      const cell = decode(key);
+      const center = cellCenter(cell.c, cell.r);
+      cells.push({ x: center.x, z: center.z, distance: g * cellSize });
+    }
+    return cells;
+  }
+
   return {
     isWalkable,
     blockCircle,
@@ -207,6 +255,7 @@ export function createNavGrid({ width, depth, cellSize }) {
     nearestWalkable,
     findPath,
     lineOfSight,
+    reachable,
   };
 }
 

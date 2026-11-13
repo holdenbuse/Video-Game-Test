@@ -105,6 +105,8 @@ Bloom Shield is the established starting defensive ability, so it is the defensi
 
 The guardian's defeat uses the normal combat result. The story outcome is not a death.
 
+In the current prototype, the first puzzle completion starts this practice fight. Petal Streams is the only puzzle in the build, so finishing it is that first completion. The panels are interface instructions, not book pages. Damage, range, and cooldown numbers are labeled placeholders (Q-015). Petal Dart, Root Snare, and Resonant Pulse exist as data and are not taught in this fight (Q-003).
+
 #### Encounter 2 — standard battle
 
 A standard introductory battle. The player uses the mechanics from Encounter 1 with more freedom. The enemy is `TBD` (Q-011). Use a labeled placeholder until the owner defines the enemy. Do not give that placeholder a role in the academy conspiracy or a relationship to Orin.

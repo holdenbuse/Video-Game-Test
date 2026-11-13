@@ -31,7 +31,8 @@ Open questions cited below are defined in `GAME_DESIGN.md` §18. Do not close th
 | Milestone 0 documents drafted | Verified by owner approval on 2026-11-13 |
 | Milestone 0 owner approval | Verified |
 | Milestone 1 gameplay | Verified in the browser. |
-| Milestone 2 Petal Streams | Verified in the browser. Do not start Milestone 3 without approval. |
+| Milestone 2 Petal Streams | Verified in the browser. |
+| Milestone 3 Garden Guardian tutorial | Verified in the browser. Do not start Milestone 4 without approval. |
 
 ## Planning
 
@@ -96,15 +97,15 @@ Milestone 3 is the tutorial slice. Later rows are established rules and must not
 
 | ID | Task | Phase | Priority | Status | Dependencies | Completion criteria |
 |---|---|---|---|---|---|---|
-| C-01 | Build the combat framework | Combat | Critical | Not Started | F-04 | A battle runs in the 3D scene with visible initiative, turn order, health, victory, and party defeat. No random encounters exist. |
-| C-02 | Implement Action Points | Combat | Critical | Not Started | C-01 | Each turn starts at 4 AP. Unused AP is discarded. Costs come from ability data. |
-| C-03 | Implement combat movement | Combat | Critical | Not Started | C-01, F-10 | The player sees range, path, and extra AP cost. Movement can be split around actions. A confirmed move is not undone. |
-| C-04 | Implement basic attacks | Combat | Critical | Not Started | C-02 | A basic attack costs its defined AP, has no cooldown, and hits an unobstructed target. |
-| C-05 | Implement the four starting abilities | Combat | Critical | Not Started | C-02 | Petal Dart, Root Snare, Bloom Shield, and Resonant Pulse exist as data. Unpublished numbers are labeled placeholders (Q-015). |
-| C-06 | Implement cooldowns | Combat | High | Not Started | C-05 | Magical abilities can be on cooldown. Basic attacks cannot. |
-| C-07 | Implement tutorial UI | Combat | Critical | Not Started | C-01 | Panels explain one idea at a time, highlight the control, pause for a required guided action, and dismiss themselves. None of this text is a book page. |
-| C-08 | Implement the Garden Guardian tutorial | Combat | Critical | Not Started | C-03, C-04, C-06, C-07 | The player can finish Encounter 1 against the nonlethal guardian. The result is not presented as a death. Bloom Shield is the defensive lesson. |
-| C-09 | Implement enemy turns | Combat | Critical | Not Started | C-01 | The guardian acts on its initiative. The tutorial AI may be simple, but it uses the enemy-turn system rather than a scripted player-only sequence. |
+| C-01 | Build the combat framework | Combat | Critical | Verified | F-04 | A battle runs in the 3D scene with visible initiative, turn order, health, victory, and party defeat. No random encounters exist. Checked by the tutorial fight in the browser and the combat tests. |
+| C-02 | Implement Action Points | Combat | Critical | Verified | C-01 | Each turn starts at 4 AP. Unused AP is discarded. Costs come from ability data. Checked in the combat tests. |
+| C-03 | Implement combat movement | Combat | Critical | Verified | C-01, F-10 | The player sees range, path, and extra AP cost. Movement can be split around actions. A confirmed move is not undone. Checked in the combat tests and by a confirmed move in the browser. |
+| C-04 | Implement basic attacks | Combat | Critical | Verified | C-02 | A basic attack costs its defined AP, has no cooldown, and hits an unobstructed target. Checked in the combat tests and by clicking the guardian in the browser. |
+| C-05 | Implement the four starting abilities | Combat | Critical | Verified | C-02 | Petal Dart, Root Snare, Bloom Shield, and Resonant Pulse exist as data. Unpublished numbers are labeled placeholders (Q-015). The tutorial bar teaches Bloom Shield only (Q-003). |
+| C-06 | Implement cooldowns | Combat | High | Verified | C-05 | Magical abilities can be on cooldown. Basic attacks cannot. Checked when Bloom Shield showed a cooldown and a second cast was refused. |
+| C-07 | Implement tutorial UI | Combat | Critical | Verified | C-01 | Panels explain one idea at a time, highlight the control, pause for a required guided action, and dismiss themselves. None of this text is a book page. Checked through the browser lesson. |
+| C-08 | Implement the Garden Guardian tutorial | Combat | Critical | Verified | C-03, C-04, C-06, C-07 | The player can finish Encounter 1 against the nonlethal guardian. The result is not presented as a death. Bloom Shield is the defensive lesson. Checked in the browser: the closing panel says the guardian withdraws and this was not a death. |
+| C-09 | Implement enemy turns | Combat | Critical | Verified | C-01 | The guardian acts on its initiative. The tutorial AI may be simple, but it uses the enemy-turn system rather than a scripted player-only sequence. Checked when the guardian struck after Orin's first turn and reduced the shield. |
 | C-10 | Implement Encounter 2 | Combat | High | Not Started | C-08, Z-05 | The second completion starts a standard battle with more freedom than the tutorial. The enemy stays a labeled placeholder until Q-011 is answered. |
 | C-11 | Implement encounter-order progression | Combat | Critical | Not Started | Z-05, C-08, C-10, C-12 | Completion count, not puzzle identity, selects tutorial, then standard battle, then boss. A second puzzle cannot increment the count before the current completion is bound to its encounter. Rewards happen once. |
 | C-12 | Implement the garden boss framework | Combat | High | Not Started | C-01 | A boss can run with one HP pool and a signature action. A placeholder has no canonical name or story role (Q-012). Encounter selection is C-11, not this task. |
@@ -118,7 +119,7 @@ Milestone 3 is the tutorial slice. Later rows are established rules and must not
 | C-20 | Implement reinforcements | Combat | Low | Not Started | C-19 | A scripted, finite reinforcement can enter after a telegraph. Not required for the garden unless a later encounter design asks for it. |
 | C-21 | Implement ultimate charge | Combat | Low | Not Started | C-05 | Charge starts at zero each battle and can become available through authored actions. Multiple-ultimate charge behavior waits on Q-017. |
 | C-22 | Implement combat UI presets | Combat | Medium | Not Started | C-01 | Minimal, Balanced, and Advanced presets can show the combat fields allowed in `GAME_DESIGN.md` §14. Targeting does not reveal exact damage or hidden weaknesses. |
-| C-23 | Restore the party after victory | Combat | High | Not Started | C-01 | Knocked-out active members return at full health after victory. A total-party defeat offers retry or load and does not advance the story. |
+| C-23 | Restore the party after victory | Combat | High | Verified | C-01 | Knocked-out active members return at full health after victory. A total-party defeat offers retry or load and does not advance the story. Checked for the solo tutorial: victory restores Orin, and defeat retries the same practice fight. |
 
 ## Story
 
@@ -198,3 +199,4 @@ Do not add tasks that implement the following unless the owner changes the desig
 | 2026-11-13 | Vercel reported a failed deployment for the garden commit. Added explicit Vite build settings. REL-04 is `Implemented`, not `Verified`. |
 | 2026-11-13 | Vercel deployment for `1ed8711` completed successfully. REL-04 marked `Verified`. |
 | 2026-11-13 | Owner approved Milestone 2 and asked for the view to move away from Orin as well as stay on them. F-05 rechecked. Z-01, Z-02, and Z-06 marked `Verified` after unit tests and a browser solve, reset, and second solve. Combat was not started. |
+| 2026-11-13 | Owner approved Milestone 3 and asked that the mouse be enough for every action. Left-drag pans the view. C-01 through C-09 and C-23 marked `Verified` after combat tests and a browser practice fight that ended with the guardian withdrawing. Encounter 2 and the boss were not started. |

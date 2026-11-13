@@ -17,9 +17,11 @@ The owner blueprint that created these files is preserved in the documents above
 
 The owner approved the planning documents and Milestone 1 on 2026-11-13. Milestone 1 is implemented: a browser garden with movement, camera controls, collision, and one test interaction.
 
-The owner approved Milestone 2 on 2026-11-13 and asked for the isometric view to be able to move away from Orin as well as stay on them. Milestone 2 is implemented: the view follows Orin until the player pans it, recenter sticks it back, and Petal Streams can be solved, reset, and confirmed once. Completing it does not start combat.
+The owner approved Milestone 2 on 2026-11-13 and asked for the isometric view to be able to move away from Orin as well as stay on them. Milestone 2 is implemented: the view follows Orin until the player pans it, and Petal Streams can be solved, reset, and confirmed once.
 
-Do not start Milestone 3 until the owner approves it. Finish and verify one milestone before starting the next major milestone.
+The owner approved Milestone 3 on 2026-11-13 and asked that every action be possible with the mouse. Milestone 3 is implemented: left-drag pans the view, and the first puzzle completion starts the Garden Guardian practice fight. The fight can be finished with the mouse. It does not start Encounter 2 or the garden boss.
+
+Do not start Milestone 4 until the owner approves it. Finish and verify one milestone before starting the next major milestone.
 
 Run the prototype with `npm install`, then `npm run dev`. Pathfinding checks are `npm test`. The production build is `npm run build`.
 
