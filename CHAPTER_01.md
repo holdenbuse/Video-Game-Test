@@ -67,7 +67,7 @@ All three exist in the garden and can be solved in any order.
 
 #### Petal Streams
 
-An introductory energy-routing puzzle. It introduces Petalcraft and environmental magic. The objects, connections, and success rule beyond "route magical energy" are `TBD` (Q-013).
+An introductory energy-routing puzzle. It introduces Petalcraft and environmental magic. The playable prototype, labeled in the garden, puts a fixed bloom, two straight flowers, one elbow, and a basin on the north-west lawn. The player turns the flowers so the light reaches the basin. A stone resets them. The first solution is stored for the browser session and does not start combat. The final objects and layout are still `TBD` (Q-013).
 
 #### The Fountain
 

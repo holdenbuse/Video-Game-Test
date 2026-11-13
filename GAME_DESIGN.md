@@ -174,7 +174,7 @@ Chapter 1 places its only boss in the childhood garden, then continues through t
 
 ### 7.1 Camera
 
-Use a fully 3D isometric-style camera. The player can rotate it, zoom, and pan where appropriate. What "where appropriate" permits is `TBD` (Q-030). During ordinary exploration the camera follows Orin smoothly.
+Use a fully 3D isometric-style camera. The player can rotate it and zoom within limits. During ordinary exploration the view stays on Orin and follows them while they walk. Middle-drag, the arrow keys, and the on-screen pad pan the view away from Orin and leave it there. The Orin button, or C, sticks the view back on Orin, including while they walk. That is the prototype answer to Q-030.
 
 ### 7.2 Movement
 
@@ -240,7 +240,7 @@ Puzzle interactions may express a magic branch in the environment. That is not a
 
 | Puzzle | Established behavior |
 |---|---|
-| Petal Streams | Introductory magical energy-routing. Introduces Petalcraft and environmental magic. Layout and node rules are `TBD` (Q-013). |
+| Petal Streams | Introductory magical energy-routing. Introduces Petalcraft and environmental magic. The playable garden uses a labeled prototype: a fixed source, two straight flowers, one elbow, and a basin. The final layout is `TBD` (Q-013). |
 | The Fountain | Magical growth and water mechanisms. Introduces Overgrowth and environmental manipulation. Exact mechanism is `TBD` (Q-013). |
 | Memory Flowers | The player studies four flowers for seven seconds, then recreates the arrangement. Looking at the arrangement again resets the attempt. Input details may be refined later (Q-013). No branch is assigned to this puzzle. Do not assign one only to mirror the four schools. |
 
@@ -562,7 +562,7 @@ Answer these before the milestone that would otherwise invent the answer. Milest
 | Q-010 | What is Mira's childhood gift, and when is it shown? It is not in the Chapter 1 timeline. | The chapter that establishes it |
 | Q-011 | Who is the second garden encounter's enemy? | Encounter 2 |
 | Q-012 | Who is the garden boss, and what are the mechanics? | Boss content beyond a placeholder |
-| Q-013 | What are the exact Petal Streams, Fountain, and Memory Flowers layouts? | Those puzzles |
+| Q-013 | What are the exact Petal Streams, Fountain, and Memory Flowers layouts? The garden has a labeled prototype Petal Streams layout. That layout is not the final answer. | Those puzzles |
 | Q-014 | When does magic perception unlock? | Exploration tuning |
 | Q-015 | What are the combat numbers: damage, costs, cooldowns, ranges, movement, accuracy? | Combat tuning |
 | Q-016 | What are the skill nodes, how do the four trees interconnect, and can an ultimate be bought before both paths? | Skill-tree content |
@@ -579,7 +579,7 @@ Answer these before the milestone that would otherwise invent the answer. Milest
 | Q-027 | Is Mira's failed protection the same event as her final-battle death? | That later chapter |
 | Q-028 | In which chapters do Arthur and the Old Stranger first appear? | Those chapters |
 | Q-029 | Who is the antagonist? Do not answer this in early content. | The intended reveal only |
-| Q-030 | When may the player pan the camera? | Camera polish |
+| Q-030 | Resolved for the prototype on 2026-11-13. The player may pan the garden view at any time. The view follows Orin until that pan, and recenter sticks it back. See §7.1. | Resolved |
 | Q-031 | Is any movement control required besides click-to-move? | Movement implementation |
 | Q-032 | Confirm that the childhood garden party is Orin alone. | Garden combat |
 | Q-033 | How much catch-up XP do Chapters 9 and 10 contain? | Those reward tables |

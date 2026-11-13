@@ -28,7 +28,7 @@ canvas {
   position: absolute;
   top: 16px;
   left: 16px;
-  max-width: 320px;
+  max-width: 380px;
   padding: 12px 14px;
   color: #2a241c;
   background: rgba(255, 248, 236, 0.92);
@@ -69,13 +69,25 @@ canvas {
   right: 16px;
   bottom: 16px;
   display: flex;
-  gap: 8px;
+  align-items: end;
+  gap: 10px;
+}
+
+.pad {
+  display: grid;
+  grid-template-columns: repeat(3, 44px);
+  gap: 6px;
 }
 
 .controls button {
   min-width: 44px;
   height: 44px;
   font-size: 18px;
+}
+
+#center-view {
+  font-size: 13px;
+  padding: 0 4px;
 }
 
 .toast {

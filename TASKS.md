@@ -1,7 +1,7 @@
 # When the Flowers Fade — Tasks
 
 **Drafted:** 2026-11-13  
-**Rule:** A task is not `Verified` because a file exists. `Verified` requires the completion criteria to have been checked. Gameplay tasks stay `Not Started` until Milestone 1 is approved.
+**Rule:** A task is not `Verified` because a file exists. `Verified` requires the completion criteria to have been checked. Do not start a milestone's gameplay until the owner approves that milestone.
 
 Related documents: `AGENTS.md`, `GAME_PLAN.md`, `GAME_DESIGN.md`, `CHAPTER_01.md`.
 
@@ -30,7 +30,8 @@ Open questions cited below are defined in `GAME_DESIGN.md` §18. Do not close th
 |---|---|
 | Milestone 0 documents drafted | Verified by owner approval on 2026-11-13 |
 | Milestone 0 owner approval | Verified |
-| Milestone 1 gameplay | Verified in the browser. Do not start Milestone 2 without approval. |
+| Milestone 1 gameplay | Verified in the browser. |
+| Milestone 2 Petal Streams | Verified in the browser. Do not start Milestone 3 without approval. |
 
 ## Planning
 
@@ -54,14 +55,14 @@ Milestone 1. Do not start until P-07 approves Milestone 1.
 | F-02 | Configure Three.js | Foundation | Critical | Verified | F-01 | A Three.js scene renders a canvas without console errors. |
 | F-03 | Create the game scene | Foundation | Critical | Verified | F-02 | Initialization code owns the scene, camera, and renderer and does not contain puzzle or combat rules. |
 | F-04 | Implement the rendering loop | Foundation | Critical | Verified | F-03 | The frame loop updates and draws continuously while the page is open. |
-| F-05 | Implement the isometric camera | Foundation | High | Verified | F-04 | The camera uses an isometric-style view and follows Orin during exploration. |
-| F-06 | Implement camera rotation | Foundation | High | Verified | F-05 | The player can rotate the view around Orin. |
+| F-05 | Implement the isometric camera | Foundation | High | Verified | F-04 | The camera uses an isometric-style view. It follows Orin until the player pans, and recenter sticks it back (TD-012). Rechecked in the browser on 2026-11-13. |
+| F-06 | Implement camera rotation | Foundation | High | Verified | F-05 | The player can rotate the view around its focus. |
 | F-07 | Implement camera zoom | Foundation | High | Verified | F-05 | The player can zoom in and out within set limits. |
 | F-08 | Implement click-to-move | Foundation | Critical | Verified | F-04, F-12 | Clicking a valid point makes Orin walk there smoothly and turn along the path. |
 | F-09 | Implement collision | Foundation | Critical | Verified | F-08 | Orin does not pass through blocking garden geometry. |
 | F-10 | Implement obstacle avoidance or pathfinding | Foundation | Critical | Verified | F-09 | A click behind a simple obstacle produces a valid route or a clear rejection. Cutting through the obstacle is not accepted. |
 | F-11 | Show destination feedback | Foundation | High | Verified | F-08 | The selected destination is visible until Orin arrives or the move is replaced. |
-| F-12 | Add placeholder young Orin | Foundation | Critical | Verified | F-03 | A recognizable placeholder character stands in the garden and is the follow target. Gender selection is not required (Q-008). |
+| F-12 | Add placeholder young Orin | Foundation | Critical | Verified | F-03 | A recognizable placeholder character stands in the garden, and the view can return to them. Gender selection is not required (Q-008). |
 
 ## Garden
 
@@ -82,12 +83,12 @@ Milestone 1 uses only enough of this phase to walk and interact. The rest suppor
 
 | ID | Task | Phase | Priority | Status | Dependencies | Completion criteria |
 |---|---|---|---|---|---|---|
-| Z-01 | Build the puzzle framework | Puzzles | Critical | Not Started | G-06 | A puzzle can declare an objective, reset, record completion once, and refuse repeat rewards. A wrong action does not permanently block the garden. |
-| Z-02 | Implement Petal Streams | Puzzles | Critical | Not Started | Z-01 | The player can route the puzzle's magical energy, see feedback, get confirmation, reset, and continue exploring. Layout details that are still `TBD` use a labeled placeholder (Q-013). |
+| Z-01 | Build the puzzle framework | Puzzles | Critical | Verified | G-06 | A puzzle can declare an objective, reset, record completion once, and refuse repeat rewards. A wrong action does not permanently block the garden. Checked by the completion-log tests and a browser solve, reset, and second solve of Petal Streams. |
+| Z-02 | Implement Petal Streams | Puzzles | Critical | Verified | Z-01 | The player can route the puzzle's magical energy, see feedback, get confirmation, reset, and continue exploring. Layout details that are still `TBD` use a labeled placeholder (Q-013). Checked in the browser: the light reaches the basin, the first toast is "Petal Streams complete.", and the second is "Petal Streams is already complete." |
 | Z-03 | Implement The Fountain | Puzzles | High | Not Started | Z-01, G-03 | The player can solve a growth-and-water puzzle at the fountain, reset it, and keep the completion. |
 | Z-04 | Implement Memory Flowers | Puzzles | High | Not Started | Z-01, G-04 | Four flowers are shown for seven seconds. Recreating them succeeds. Looking again resets the attempt. The general reset still exists. |
 | Z-05 | Allow any puzzle order | Puzzles | Critical | Not Started | Z-02, Z-03, Z-04 | Any of the three puzzles can be solved first, second, or third. No fourth puzzle exists. |
-| Z-06 | Separate puzzle casts from combat casts | Puzzles | Medium | Not Started | Z-01 | Environmental puzzle interactions do not depend on the combat ability bar unless a later approved decision unifies them. |
+| Z-06 | Separate puzzle casts from combat casts | Puzzles | Medium | Verified | Z-01 | Environmental puzzle interactions do not depend on the combat ability bar unless a later approved decision unifies them. Petal Streams turns from a world click. No combat bar is on screen. Checked while solving it in the browser. |
 
 ## Combat
 
@@ -171,7 +172,7 @@ Milestone 3 is the tutorial slice. Later rows are established rules and must not
 | POL-03 | Character animation | Polish | Low | Not Started | F-12 | Movement and major actions are animated. Gameplay does not wait on this task. |
 | POL-04 | Audio | Polish | Low | Not Started | S-02, C-01 | Placeholder or final audio can play for book, movement, and combat. Voice scope waits on Q-022. |
 | POL-05 | UI presentation | Polish | Low | Not Started | C-22, X-08 | Combat, tutorial, and encyclopedia UI match the restrained fantasy presentation. Function remains the earlier UI tasks. |
-| POL-06 | Camera polish | Polish | Low | Not Started | F-06, F-07 | Follow, rotation, and zoom feel stable. Pan behavior waits on Q-030. |
+| POL-06 | Camera polish | Polish | Low | Not Started | F-06, F-07 | Follow, pan, recenter, rotation, and zoom behave as TD-012. Further feel polish is still open. |
 | POL-07 | Bug-fix pass | Polish | High | Not Started | REL-01 | Defects found in a tested milestone are fixed and the failed check is run again. |
 
 ## Explicitly rejected work
@@ -196,3 +197,4 @@ Do not add tasks that implement the following unless the owner changes the desig
 | 2026-11-13 | Owner approved the planning set and Milestone 1. P-01 through P-07 marked `Verified`. Milestone 1 foundation and garden tasks marked `Verified` after browser play, pathfinding tests, and a scripted click that produced the pedestal confirmation. |
 | 2026-11-13 | Vercel reported a failed deployment for the garden commit. Added explicit Vite build settings. REL-04 is `Implemented`, not `Verified`. |
 | 2026-11-13 | Vercel deployment for `1ed8711` completed successfully. REL-04 marked `Verified`. |
+| 2026-11-13 | Owner approved Milestone 2 and asked for the view to move away from Orin as well as stay on them. F-05 rechecked. Z-01, Z-02, and Z-06 marked `Verified` after unit tests and a browser solve, reset, and second solve. Combat was not started. |

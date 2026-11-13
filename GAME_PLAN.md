@@ -185,7 +185,7 @@ Run it with `npm install` and `npm run dev`. The garden opens at the local Vite 
 - Vite project with Three.js.
 - A 3D garden scene using placeholder geometry.
 - A placeholder young Orin.
-- An isometric camera that follows Orin, rotates, and zooms.
+- An isometric camera that rotates and zooms. It follows Orin until the player pans it away. Recenter sticks it back. See TD-012.
 - Click-to-move with collision, obstacle avoidance or pathfinding, destination feedback, and natural turning.
 - One test object the player can interact with.
 
@@ -195,7 +195,13 @@ Run it with `npm install` and `npm run dev`. The garden opens at the local Vite 
 
 ### Milestone 2 — First puzzle
 
+Built and checked in the browser on 2026-11-13.
+
 Implement Petal Streams: interactive objects, magical energy connections, visible feedback, success detection, a reset control, and a stored completion state.
+
+The playable puzzle is a labeled prototype on the north-west lawn. Click a flower to turn it. The in-world sign states the objective. The round stone resets the flowers. The first solution shows "Petal Streams complete." Solving again says it is already complete and does not grant that result a second time. The flag lasts for the browser session. Save slots are a later milestone. Completing Petal Streams does not start the Garden Guardian.
+
+**Camera change requested with this milestone:** The view follows Orin until the player moves it. Middle-drag, the arrow keys, and the pad pan across the garden. C, or the Orin button, sticks the view back on Orin and follows them again.
 
 **Success condition:** The player can solve the puzzle, see confirmation, and keep exploring.
 
@@ -274,6 +280,8 @@ The prototype should eventually be playable through a browser link and must buil
 | TD-009 | 2026-11-13 | Milestone 1 uses procedural garden geometry, one neutral young Orin, and a labeled test pedestal. | Final art, gender selection, puzzles, combat, and story scenes are later milestones. The pedestal is not a story object. |
 | TD-010 | 2026-11-13 | `vercel.json` sets the Vite framework, `dist` output, and the single-page rewrite. Node 22 is requested in `package.json`. | The GitHub Vercel check failed on the garden commit. The deployment logs are private, so the project now states the build settings explicitly. This does not authorize a separate manual deploy. |
 | TD-011 | 2026-11-13 | The Vercel check on `1ed8711` completed successfully. | Confirms the explicit Vite settings produce a deployment. The preview remains the one created by the existing GitHub integration. |
+| TD-012 | 2026-11-13 | The exploration camera follows Orin until the player pans. Middle-drag, the arrow keys, and the on-screen pad move the view away. Recenter sticks it back on Orin, including while they walk. | The owner asked to move the view away from the character and to keep it on them. This answers Q-030 for the prototype. |
+| TD-013 | 2026-11-13 | Petal Streams ships as a labeled prototype layout. Clicking a flower turns it. The session completion flag refuses a second reward and does not start combat. Refreshing the page clears it until save slots exist. | The final layout is still Q-013. Milestone 2 must not start the Garden Guardian or grant a repeatable reward. |
 
 ## 7.1 Consistency review (2026-11-13)
 
