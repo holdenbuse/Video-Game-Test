@@ -15,11 +15,11 @@ The owner blueprint that created these files is preserved in the documents above
 
 ## Current gate
 
-Planning documents are drafted. Gameplay implementation is not approved.
+The owner approved the planning documents and Milestone 1 on 2026-11-13. Milestone 1 is implemented: a browser garden with movement, camera controls, collision, and one test interaction.
 
-Do not add gameplay code, project scaffolding, or assets until the owner approves the next milestone. The proposed first coding milestone is Milestone 1 in `GAME_PLAN.md`: a playable browser garden with movement, camera, collision, and one test interaction.
+Do not start Milestone 2 until the owner approves it. Finish and verify one milestone before starting the next major milestone.
 
-After that approval, finish and verify one milestone before starting the next major milestone.
+Run the prototype with `npm install`, then `npm run dev`. Pathfinding checks are `npm test`. The production build is `npm run build`.
 
 ## Hard rules
 

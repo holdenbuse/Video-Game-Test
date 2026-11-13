@@ -28,21 +28,21 @@ Open questions cited below are defined in `GAME_DESIGN.md` §18. Do not close th
 
 | Gate | State |
 |---|---|
-| Milestone 0 documents drafted | Implemented, awaiting owner review |
-| Milestone 0 owner approval | Not Started |
-| Milestone 1 gameplay | Not Started. Do not begin early. |
+| Milestone 0 documents drafted | Verified by owner approval on 2026-11-13 |
+| Milestone 0 owner approval | Verified |
+| Milestone 1 gameplay | Verified in the browser. Do not start Milestone 2 without approval. |
 
 ## Planning
 
 | ID | Task | Phase | Priority | Status | Dependencies | Completion criteria |
 |---|---|---|---|---|---|---|
-| P-01 | Create `GAME_PLAN.md` | Planning | Critical | Implemented | None | The file states vision, browser-versus-UE5 scope, system boundaries, milestones 0–10, and the decision log. |
-| P-02 | Create `GAME_DESIGN.md` | Planning | Critical | Implemented | None | The file records established mechanics, characters, progression, the XP table, and unresolved items as `TBD`. |
-| P-03 | Create `CHAPTER_01.md` | Planning | Critical | Implemented | None | The file gives Sequences 1–13, the three-puzzle encounter-order rule, and Chapter 1 prohibitions. |
-| P-04 | Create `TASKS.md` | Planning | Critical | Implemented | None | Every task has a name, phase, priority, status, dependencies, and completion criteria. |
-| P-05 | Create `AGENTS.md` | Planning | Critical | Implemented | None | Future agents are instructed to read the four design documents before significant changes. |
-| P-06 | Review consistency between documents | Planning | Critical | Implemented | P-01, P-02, P-03, P-04, P-05 | A review has been recorded in `GAME_PLAN.md` §7 and `GAME_DESIGN.md` §18. Owner approval is still required before this task can be `Verified`. |
-| P-07 | Owner approval of the planning set | Planning | Critical | Not Started | P-06 | The owner accepts the documents or a revised version. Approval is recorded in the decision log. This approval does not, by itself, approve every later milestone. |
+| P-01 | Create `GAME_PLAN.md` | Planning | Critical | Verified | None | The file states vision, browser-versus-UE5 scope, system boundaries, milestones 0–10, and the decision log. |
+| P-02 | Create `GAME_DESIGN.md` | Planning | Critical | Verified | None | The file records established mechanics, characters, progression, the XP table, and unresolved items as `TBD`. |
+| P-03 | Create `CHAPTER_01.md` | Planning | Critical | Verified | None | The file gives Sequences 1–13, the three-puzzle encounter-order rule, and Chapter 1 prohibitions. |
+| P-04 | Create `TASKS.md` | Planning | Critical | Verified | None | Every task has a name, phase, priority, status, dependencies, and completion criteria. |
+| P-05 | Create `AGENTS.md` | Planning | Critical | Verified | None | Future agents are instructed to read the four design documents before significant changes. |
+| P-06 | Review consistency between documents | Planning | Critical | Verified | P-01, P-02, P-03, P-04, P-05 | A review has been recorded in `GAME_PLAN.md` §7 and `GAME_DESIGN.md` §18. The owner approved the set on 2026-11-13. |
+| P-07 | Owner approval of the planning set | Planning | Critical | Verified | P-06 | The owner accepted the documents on 2026-11-13. Recorded as TD-008. This approval covers Milestone 1, not every later milestone. |
 
 ## Foundation
 
@@ -50,18 +50,18 @@ Milestone 1. Do not start until P-07 approves Milestone 1.
 
 | ID | Task | Phase | Priority | Status | Dependencies | Completion criteria |
 |---|---|---|---|---|---|---|
-| F-01 | Initialize the Vite project | Foundation | Critical | Not Started | P-07 | `npm` scripts exist for dev and production build. The app opens in a browser. |
-| F-02 | Configure Three.js | Foundation | Critical | Not Started | F-01 | A Three.js scene renders a canvas without console errors. |
-| F-03 | Create the game scene | Foundation | Critical | Not Started | F-02 | Initialization code owns the scene, camera, and renderer and does not contain puzzle or combat rules. |
-| F-04 | Implement the rendering loop | Foundation | Critical | Not Started | F-03 | The frame loop updates and draws continuously while the page is open. |
-| F-05 | Implement the isometric camera | Foundation | High | Not Started | F-04 | The camera uses an isometric-style view and follows Orin during exploration. |
-| F-06 | Implement camera rotation | Foundation | High | Not Started | F-05 | The player can rotate the view around Orin. |
-| F-07 | Implement camera zoom | Foundation | High | Not Started | F-05 | The player can zoom in and out within set limits. |
-| F-08 | Implement click-to-move | Foundation | Critical | Not Started | F-04, F-12 | Clicking a valid point makes Orin walk there smoothly and turn along the path. |
-| F-09 | Implement collision | Foundation | Critical | Not Started | F-08 | Orin does not pass through blocking garden geometry. |
-| F-10 | Implement obstacle avoidance or pathfinding | Foundation | Critical | Not Started | F-09 | A click behind a simple obstacle produces a valid route or a clear rejection. Cutting through the obstacle is not accepted. |
-| F-11 | Show destination feedback | Foundation | High | Not Started | F-08 | The selected destination is visible until Orin arrives or the move is replaced. |
-| F-12 | Add placeholder young Orin | Foundation | Critical | Not Started | F-03 | A recognizable placeholder character stands in the garden and is the follow target. Gender selection is not required (Q-008). |
+| F-01 | Initialize the Vite project | Foundation | Critical | Verified | P-07 | `npm` scripts exist for dev and production build. The app opens in a browser. |
+| F-02 | Configure Three.js | Foundation | Critical | Verified | F-01 | A Three.js scene renders a canvas without console errors. |
+| F-03 | Create the game scene | Foundation | Critical | Verified | F-02 | Initialization code owns the scene, camera, and renderer and does not contain puzzle or combat rules. |
+| F-04 | Implement the rendering loop | Foundation | Critical | Verified | F-03 | The frame loop updates and draws continuously while the page is open. |
+| F-05 | Implement the isometric camera | Foundation | High | Verified | F-04 | The camera uses an isometric-style view and follows Orin during exploration. |
+| F-06 | Implement camera rotation | Foundation | High | Verified | F-05 | The player can rotate the view around Orin. |
+| F-07 | Implement camera zoom | Foundation | High | Verified | F-05 | The player can zoom in and out within set limits. |
+| F-08 | Implement click-to-move | Foundation | Critical | Verified | F-04, F-12 | Clicking a valid point makes Orin walk there smoothly and turn along the path. |
+| F-09 | Implement collision | Foundation | Critical | Verified | F-08 | Orin does not pass through blocking garden geometry. |
+| F-10 | Implement obstacle avoidance or pathfinding | Foundation | Critical | Verified | F-09 | A click behind a simple obstacle produces a valid route or a clear rejection. Cutting through the obstacle is not accepted. |
+| F-11 | Show destination feedback | Foundation | High | Verified | F-08 | The selected destination is visible until Orin arrives or the move is replaced. |
+| F-12 | Add placeholder young Orin | Foundation | Critical | Verified | F-03 | A recognizable placeholder character stands in the garden and is the follow target. Gender selection is not required (Q-008). |
 
 ## Garden
 
@@ -69,14 +69,14 @@ Milestone 1 uses only enough of this phase to walk and interact. The rest suppor
 
 | ID | Task | Phase | Priority | Status | Dependencies | Completion criteria |
 |---|---|---|---|---|---|---|
-| G-01 | Create garden terrain | Garden | Critical | Not Started | F-03 | The playable surface has bounds and is the walkable ground for Milestone 1. |
-| G-02 | Add pathways | Garden | High | Not Started | G-01 | Paths are visually distinct from planting beds and connect the areas Orin can walk. |
-| G-03 | Add the fountain | Garden | High | Not Started | G-01 | A fountain landmark exists. This task does not require the Fountain puzzle to function. |
-| G-04 | Add flowers and trees | Garden | High | Not Started | G-01 | Placeholder plants make the space read as a garden, including flowers that later puzzles can reuse. |
-| G-05 | Add garden architecture | Garden | Medium | Not Started | G-01 | Walls, beds, or estate edges block and guide movement without a minimap. |
-| G-06 | Add interactable objects | Garden | High | Not Started | F-08, G-01 | The interaction system can target an object in the world. No inventory is created. |
-| G-07 | Add one Milestone 1 test interaction | Garden | Critical | Not Started | G-06 | The player can interact with a test object and receive visible confirmation. This satisfies the Milestone 1 interaction requirement. |
-| G-08 | Support exploration without HUD navigation | Garden | Medium | Not Started | G-02, G-05 | The garden test is playable without a minimap, compass, or waypoint arrow. |
+| G-01 | Create garden terrain | Garden | Critical | Verified | F-03 | The playable surface has bounds and is the walkable ground for Milestone 1. |
+| G-02 | Add pathways | Garden | High | Verified | G-01 | Paths are visually distinct from planting beds and connect the areas Orin can walk. |
+| G-03 | Add the fountain | Garden | High | Verified | G-01 | A fountain landmark exists. This task does not require the Fountain puzzle to function. |
+| G-04 | Add flowers and trees | Garden | High | Verified | G-01 | Placeholder plants make the space read as a garden, including flowers that later puzzles can reuse. |
+| G-05 | Add garden architecture | Garden | Medium | Verified | G-01 | Walls, beds, or estate edges block and guide movement without a minimap. |
+| G-06 | Add interactable objects | Garden | High | Verified | F-08, G-01 | The interaction system can target an object in the world. No inventory is created. |
+| G-07 | Add one Milestone 1 test interaction | Garden | Critical | Verified | G-06 | The player can interact with a test object and receive visible confirmation. This satisfies the Milestone 1 interaction requirement. |
+| G-08 | Support exploration without HUD navigation | Garden | Medium | Verified | G-02, G-05 | The garden test is playable without a minimap, compass, or waypoint arrow. |
 
 ## Puzzles
 
@@ -193,3 +193,4 @@ Do not add tasks that implement the following unless the owner changes the desig
 | Date | Change |
 |---|---|
 | 2026-11-13 | Planning tasks P-01 through P-06 marked `Implemented` after the initial documents were written and cross-checked. None are `Verified`. No gameplay tasks started. |
+| 2026-11-13 | Owner approved the planning set and Milestone 1. P-01 through P-07 marked `Verified`. Milestone 1 foundation and garden tasks marked `Verified` after browser play, pathfinding tests, and a scripted click that produced the pedestal confirmation. |

@@ -172,11 +172,13 @@ Build the smallest testable slice of each milestone. Do not start a major milest
 
 **Success condition:** The owner approves the documents as the working plan, or requests specific revisions. Approval of the documents is not approval to implement every milestone.
 
-**Status:** Drafted on 2026-11-13. Awaiting owner approval. Not verified.
+**Status:** Approved by the owner on 2026-11-13.
 
 ### Milestone 1 — Playable 3D garden
 
-This is the proposed first coding milestone. It is not approved yet.
+Approved and built on 2026-11-13.
+
+Run it with `npm install` and `npm run dev`. The garden opens at the local Vite address. `npm test` checks pathfinding. `npm run build` makes the production bundle.
 
 **Requirements:**
 
@@ -268,6 +270,8 @@ The prototype should eventually be playable through a browser link and must buil
 | TD-005 | 2026-11-13 | The XP formula was summed for levels 1 through 50. Cumulative XP to reach level 50 is 110,348, matching the blueprint. The per-level table in `GAME_DESIGN.md` is that calculation. | Prevent reward tables from being written against an unchecked total. |
 | TD-006 | 2026-11-13 | The level-50 bonus is part of the 54 skill points. No points are granted after level 50. | 49 level-ups plus bonuses at 10, 20, 30, 40, and 50 equal 54. "No additional skill points" forbids a post-cap reward, not the level-50 bonus. |
 | TD-007 | 2026-11-13 | "Academy head" and "academy leader" are recorded with the blueprint's wording. They are not merged or split until the owner answers Q-001. | The blueprint uses both titles for the invitation and the ceremony death. |
+| TD-008 | 2026-11-13 | The owner approved the planning documents and Milestone 1. | Approval to leave preproduction and build the walking garden only. |
+| TD-009 | 2026-11-13 | Milestone 1 uses procedural garden geometry, one neutral young Orin, and a labeled test pedestal. | Final art, gender selection, puzzles, combat, and story scenes are later milestones. The pedestal is not a story object. |
 
 ## 7.1 Consistency review (2026-11-13)
 
