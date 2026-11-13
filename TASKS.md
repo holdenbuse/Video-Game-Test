@@ -164,7 +164,7 @@ Milestone 3 is the tutorial slice. Later rows are established rules and must not
 | REL-01 | Browser testing | Release | Critical | Not Started | The milestone under test | The milestone success condition is exercised in a browser and the result is recorded on the task. |
 | REL-02 | Performance testing | Release | Medium | Not Started | F-04 | The garden scene keeps a playable frame rate in the browser used for the test. Record the browser and the observation. |
 | REL-03 | Production build verification | Release | High | Not Started | F-01 | `vite build` completes and the built output loads. |
-| REL-04 | Prepare Vercel deployment | Release | Medium | Implemented | REL-03 | `vercel.json` tells Vercel to install dependencies, run `npm run build`, and publish `dist`. A manual deploy is still not authorized. This becomes `Verified` when a Vercel build succeeds. |
+| REL-04 | Prepare Vercel deployment | Release | Medium | Verified | REL-03 | `vercel.json` tells Vercel to install dependencies, run `npm run build`, and publish `dist`. The Vercel check on commit `1ed8711` completed successfully. A separate manual deploy was not run. |
 | REL-05 | Playable prototype review | Release | High | Not Started | S-17, REL-01 | A Chapter 1 prototype review notes what was played and which tasks are `Verified`. |
 | POL-01 | Lighting | Polish | Low | Not Started | G-01 | Garden light supports navigation. It does not replace landmarks with UI markers. |
 | POL-02 | Environment art | Polish | Low | Not Started | G-05, S-08 | Placeholder geometry can be replaced without changing collision and puzzle positions that were verified. |
@@ -195,3 +195,4 @@ Do not add tasks that implement the following unless the owner changes the desig
 | 2026-11-13 | Planning tasks P-01 through P-06 marked `Implemented` after the initial documents were written and cross-checked. None are `Verified`. No gameplay tasks started. |
 | 2026-11-13 | Owner approved the planning set and Milestone 1. P-01 through P-07 marked `Verified`. Milestone 1 foundation and garden tasks marked `Verified` after browser play, pathfinding tests, and a scripted click that produced the pedestal confirmation. |
 | 2026-11-13 | Vercel reported a failed deployment for the garden commit. Added explicit Vite build settings. REL-04 is `Implemented`, not `Verified`. |
+| 2026-11-13 | Vercel deployment for `1ed8711` completed successfully. REL-04 marked `Verified`. |

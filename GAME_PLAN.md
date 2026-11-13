@@ -273,6 +273,7 @@ The prototype should eventually be playable through a browser link and must buil
 | TD-008 | 2026-11-13 | The owner approved the planning documents and Milestone 1. | Approval to leave preproduction and build the walking garden only. |
 | TD-009 | 2026-11-13 | Milestone 1 uses procedural garden geometry, one neutral young Orin, and a labeled test pedestal. | Final art, gender selection, puzzles, combat, and story scenes are later milestones. The pedestal is not a story object. |
 | TD-010 | 2026-11-13 | `vercel.json` sets the Vite framework, `dist` output, and the single-page rewrite. Node 22 is requested in `package.json`. | The GitHub Vercel check failed on the garden commit. The deployment logs are private, so the project now states the build settings explicitly. This does not authorize a separate manual deploy. |
+| TD-011 | 2026-11-13 | The Vercel check on `1ed8711` completed successfully. | Confirms the explicit Vite settings produce a deployment. The preview remains the one created by the existing GitHub integration. |
 
 ## 7.1 Consistency review (2026-11-13)
 
