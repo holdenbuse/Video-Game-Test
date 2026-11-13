@@ -1,0 +1,21 @@
+{
+  "name": "when-the-flowers-fade",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test src/movement/navGrid.test.js src/camera/panFocus.test.js src/puzzles/petalStreams.test.js src/combat/combat.test.js"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}
