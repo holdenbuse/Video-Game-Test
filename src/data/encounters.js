@@ -3,7 +3,7 @@ import { PLACEHOLDER_COMBAT } from './abilities.js';
 
 // Encounter type follows completion count, not which puzzle was solved.
 // Numbers are placeholders until Q-015. The boss label is temporary until Q-012.
-// Phases, a signature action, and checkpoints belong to the boss framework.
+// Two phase marks share one health pool. The signature action is a placeholder, not a story ability.
 
 const PLAYER = {
   x: GARDEN_GUARDIAN.orin.x,
@@ -63,7 +63,20 @@ export const BOSS_ENCOUNTER = {
   opportunityAttacks: false,
   placeholder: true,
   oneHealthPool: true,
-  armText: 'The third puzzle selects the garden boss. This figure is a temporary label with one health pool and no story name.',
+  // Phase 1 while health is above half. Phase 2 is the rest of the same pool.
+  phases: [
+    { id: 1, aboveHpRatio: 0.5 },
+    { id: 2, aboveHpRatio: 0 },
+  ],
+  signature: {
+    id: 'signature-action',
+    name: 'Signature action',
+    placeholder: true,
+    damage: 10,
+    text: 'The boss placeholder is preparing its signature action. The hit lands on its next turn, even if you move.',
+    action: 'Bloom Shield can absorb part of it. You can still move, attack, and end the turn.',
+  },
+  armText: 'The third puzzle selects the garden boss. This figure is a temporary label with one health pool and no story name. Its signature action is shown before it lands.',
   victoryText: 'The boss placeholder withdraws. The third encounter is finished.',
   defeatText: 'The boss fight ends. Try again.',
   player: PLAYER,

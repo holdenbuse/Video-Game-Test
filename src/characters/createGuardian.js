@@ -48,6 +48,16 @@ export function createGuardian() {
     root.visible = visible;
   }
 
+  function setBossCue(boss) {
+    const telegraphing = Boolean(boss?.signaturePending);
+    glow.emissive.setHex(telegraphing ? 0xd06a1a : 0x8fbf45);
+    glow.emissiveIntensity = telegraphing ? 1.15 : 0.45;
+    if (!boss) return;
+    const look = LOOKS.boss;
+    leaf.color.setHex(boss.phase > 1 ? 0x2a4630 : look.leaf);
+    moss.color.setHex(boss.phase > 1 ? 0x8f6a32 : look.moss);
+  }
+
   function setEncounter(kind, fighterId = 'garden-guardian') {
     const look = LOOKS[kind] ?? LOOKS.tutorial;
     leaf.color.setHex(look.leaf);
@@ -60,7 +70,7 @@ export function createGuardian() {
     });
   }
 
-  return { mesh: root, setPosition, setYaw, setVisible, setEncounter };
+  return { mesh: root, setPosition, setYaw, setVisible, setEncounter, setBossCue };
 }
 
 const LOOKS = {

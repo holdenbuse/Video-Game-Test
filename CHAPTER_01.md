@@ -113,9 +113,9 @@ A standard introductory battle. The player uses the mechanics from Encounter 1 w
 
 #### Encounter 3 — garden boss
 
-The boss begins after the third puzzle is completed. Identity, mechanics, and phases are `TBD` (Q-012). The prototype starts a temporary one-pool fight with no story name. Phases, a signature action, and checkpoints are not in this fight yet.
+The boss begins after the third puzzle is completed. Identity, mechanics, and phases are `TBD` (Q-012). The prototype uses a temporary label, Boss placeholder, with no story name.
 
-A placeholder may exercise the boss framework: one HP pool, visible phase divisions if more than one phase is needed to test checkpoints, a signature action, and a checkpoint that stores the combat state. The placeholder needs a temporary label in data, not a canonical name or story purpose.
+That fight has one health pool and two visible phases. Phase 1 is above half health. Phase 2 is the rest of the same pool. The boss spends one turn showing its signature action, then the hit lands on its next turn. Bloom Shield can absorb part of it. The action that enters phase 2 stores the combat state. After a defeat, Restore checkpoint returns to that moment, and Try again restarts the fight. The checkpoint stays in memory until a save slot exists.
 
 Full-game boss duration of 20–30 minutes is not a requirement for this introductory fight.
 

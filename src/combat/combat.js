@@ -23,6 +23,9 @@ export function createCombatSession(nav) {
   let preview = null;
   let selectedAbility = null;
   let log = [];
+  let signaturePending = false;
+  let checkpoint = null;
+  let enteredPhase = 1;
 
   function active() {
     return fighters.find((fighter) => fighter.id === order[turn]);
@@ -40,6 +43,9 @@ export function createCombatSession(nav) {
     preview = null;
     selectedAbility = null;
     log = [];
+    signaturePending = false;
+    checkpoint = null;
+    enteredPhase = 1;
     phase = 'fighting';
     startTurn();
   }
@@ -50,6 +56,9 @@ export function createCombatSession(nav) {
     definition = next;
     fighters = fightersFrom(definition);
     order = turnOrder(fighters);
+    signaturePending = false;
+    checkpoint = null;
+    enteredPhase = 1;
     phase = 'armed';
     return true;
   }
@@ -165,6 +174,7 @@ export function createCombatSession(nav) {
     tutorial.complete(lesson);
     log.push({ type: 'ability', id: fighter.id, ability: ability.id, target: target.id });
     finishIfNeeded();
+    if (phase === 'fighting') notePhase();
     return { ok: true };
   }
 
@@ -185,6 +195,11 @@ export function createCombatSession(nav) {
   function runEnemyTurn() {
     const fighter = active();
     if (!fighter || fighter.team !== 'enemy' || phase !== 'fighting') return { ok: false };
+    if (definition.signature) {
+      const result = bossSignatureTurn(fighter);
+      tutorial.complete('enemy-done');
+      return result;
+    }
     const foe = foeOf(fighter);
     if (foe) {
       const distance = Math.hypot(foe.x - fighter.x, foe.z - fighter.z);
@@ -222,6 +237,85 @@ export function createCombatSession(nav) {
     finishIfNeeded();
     if (phase === 'fighting') advance();
     tutorial.complete('enemy-done');
+    return { ok: true };
+  }
+
+  function bossSignatureTurn(fighter) {
+    const signature = definition.signature;
+    if (!signaturePending) {
+      signaturePending = true;
+      fighter.ap = 0;
+      log.push({ type: 'telegraph', id: fighter.id, ability: signature.id });
+      if (phase === 'fighting') advance();
+      return { ok: true, telegraphed: true };
+    }
+    signaturePending = false;
+    const foe = foeOf(fighter);
+    if (foe) {
+      applyDamage(foe, signature.damage);
+      log.push({ type: 'signature', id: fighter.id, ability: signature.id, target: foe.id });
+    }
+    fighter.ap = 0;
+    finishIfNeeded();
+    if (phase === 'fighting') notePhase();
+    if (phase === 'fighting') advance();
+    return { ok: true, resolved: true };
+  }
+
+  function enemyPhase() {
+    const enemy = fighters.find((fighter) => fighter.team === 'enemy');
+    return enemy ? phaseFor(definition, enemy) : 1;
+  }
+
+  function notePhase() {
+    if (definition.kind !== 'boss') return;
+    const enemy = fighters.find((fighter) => fighter.team === 'enemy' && fighter.hp > 0);
+    if (!enemy) return;
+    const next = phaseFor(definition, enemy);
+    if (next <= enteredPhase) return;
+    enteredPhase = next;
+    checkpoint = captureState();
+  }
+
+  function captureState() {
+    return {
+      turn,
+      signaturePending,
+      enteredPhase,
+      fighters: fighters.map((fighter) => ({
+        id: fighter.id,
+        x: fighter.x,
+        z: fighter.z,
+        hp: fighter.hp,
+        shield: fighter.shield ?? 0,
+        ap: fighter.ap,
+        movedDistance: fighter.movedDistance,
+        cooldowns: { ...fighter.cooldowns },
+      })),
+      log: log.map((entry) => ({ ...entry })),
+    };
+  }
+
+  function restoreCheckpoint() {
+    if (phase !== 'defeat' || !checkpoint) return { ok: false };
+    turn = checkpoint.turn;
+    signaturePending = checkpoint.signaturePending;
+    enteredPhase = checkpoint.enteredPhase;
+    for (const saved of checkpoint.fighters) {
+      const fighter = fighters.find((entry) => entry.id === saved.id);
+      if (!fighter) continue;
+      fighter.x = saved.x;
+      fighter.z = saved.z;
+      fighter.hp = saved.hp;
+      fighter.shield = saved.shield;
+      fighter.ap = saved.ap;
+      fighter.movedDistance = saved.movedDistance;
+      fighter.cooldowns = { ...saved.cooldowns };
+    }
+    log = checkpoint.log.map((entry) => ({ ...entry }));
+    preview = null;
+    selectedAbility = null;
+    phase = 'fighting';
     return { ok: true };
   }
 
@@ -317,6 +411,18 @@ export function createCombatSession(nav) {
       } : null,
       outcome: phase === 'victory' ? definition.victoryText : phase === 'defeat' ? definition.defeatText : null,
       armText: phase === 'armed' ? definition.armText : null,
+      telegraph: phase === 'fighting' && signaturePending && definition.signature ? {
+        name: definition.signature.name,
+        text: definition.signature.text,
+        action: definition.signature.action,
+      } : null,
+      boss: definition.kind === 'boss' ? {
+        phase: enemyPhase(),
+        phaseCount: definition.phases?.length ?? 1,
+        checkpoint: Boolean(checkpoint),
+        signaturePending,
+        divisions: (definition.phases ?? []).slice(0, -1).map((entry) => entry.aboveHpRatio),
+      } : null,
       fighters: fighters.map((entry) => ({
         id: entry.id,
         name: entry.name,
@@ -328,6 +434,8 @@ export function createCombatSession(nav) {
         ap: entry.ap,
         initiative: entry.initiative,
         shield: entry.shield ?? 0,
+        movedDistance: entry.movedDistance,
+        cooldowns: { ...entry.cooldowns },
         active: entry.id === fighter?.id,
       })),
       abilities: (fighter?.abilities ?? []).map((id) => {
@@ -355,9 +463,20 @@ export function createCombatSession(nav) {
     runEnemyTurn,
     acknowledge,
     retry,
+    restoreCheckpoint,
     leave,
     snapshot,
   };
+}
+
+function phaseFor(definition, enemy) {
+  const ratio = enemy.maxHp > 0 ? enemy.hp / enemy.maxHp : 0;
+  const phases = definition.phases ?? [];
+  if (phases.length === 0) return 1;
+  for (const entry of phases) {
+    if (ratio > entry.aboveHpRatio) return entry.id;
+  }
+  return phases[phases.length - 1].id;
 }
 
 export function strikeAllowed(nav, from, to, range) {

@@ -33,6 +33,7 @@ export function createCombatView(scene) {
     const showEnemy = enemy && (snapshot.phase === 'fighting' || snapshot.phase === 'victory' || snapshot.phase === 'defeat');
     guardian.setVisible(Boolean(showEnemy && enemy.hp > 0));
     guardian.setEncounter(snapshot.kind, enemy?.id);
+    guardian.setBossCue(snapshot.kind === 'boss' ? snapshot.boss : null);
     if (enemy) {
       guardian.setPosition(enemy.x, enemy.z);
       const orin = snapshot.fighters.find((fighter) => fighter.id === 'orin');

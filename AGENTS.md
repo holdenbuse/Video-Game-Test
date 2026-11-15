@@ -23,9 +23,11 @@ The owner approved Milestone 3 on 2026-11-13 and asked that every action be poss
 
 The owner approved Milestone 4 on 2026-11-15. The camera follows Orin while he walks. The Fountain and Memory Flowers can be solved in any order with Petal Streams.
 
-The owner approved Milestone 5 on 2026-11-15. Completion count selects the encounters: the first solve starts the tutorial, the second a standard placeholder fight, and the third a one-pool boss placeholder. Puzzle identity does not choose the fight. Phases, a signature action, and boss checkpoints are not in this build.
+The owner approved Milestone 5 on 2026-11-15. Completion count selects the encounters: the first solve starts the tutorial, the second a standard placeholder fight, and the third a one-pool boss placeholder. Puzzle identity does not choose the fight.
 
-Do not start Milestone 6 until the owner approves it. Finish and verify one milestone before starting the next major milestone.
+The owner approved Milestone 6 on 2026-11-15. The boss placeholder keeps one health pool with two visible phases. Its signature action is shown for a turn before it lands. Crossing into phase 2 stores an in-memory checkpoint. The boss still has no story name.
+
+Do not start Milestone 7 until the owner approves it. Finish and verify one milestone before starting the next major milestone.
 
 Run the prototype with `npm install`, then `npm run dev`. Pathfinding checks are `npm test`. The production build is `npm run build`.
 

@@ -10,6 +10,7 @@ export function createCombatHud(actions) {
       <p id="combat-action"></p>
       <button type="button" id="tutorial-continue">Continue</button>
       <button type="button" id="begin-practice">Begin</button>
+      <button type="button" id="restore-checkpoint">Restore checkpoint</button>
       <button type="button" id="retry-practice">Try again</button>
       <button type="button" id="return-garden">Return to the garden</button>
     </section>
@@ -26,6 +27,7 @@ export function createCombatHud(actions) {
 
   root.querySelector('#tutorial-continue').addEventListener('click', () => actions.onContinue());
   root.querySelector('#begin-practice').addEventListener('click', () => actions.onBegin());
+  root.querySelector('#restore-checkpoint').addEventListener('click', () => actions.onRestore());
   root.querySelector('#retry-practice').addEventListener('click', () => actions.onRetry());
   root.querySelector('#return-garden').addEventListener('click', () => actions.onLeave());
   root.querySelector('#ability-basic-attack').addEventListener('click', () => actions.onAbility('basic-attack'));
@@ -43,9 +45,10 @@ export function createCombatHud(actions) {
     const text = root.querySelector('#combat-panel-text');
     const continueButton = root.querySelector('#tutorial-continue');
     const beginButton = root.querySelector('#begin-practice');
+    const restoreButton = root.querySelector('#restore-checkpoint');
     const retryButton = root.querySelector('#retry-practice');
     const returnButton = root.querySelector('#return-garden');
-    panel.hidden = !(snapshot.armText || snapshot.tutorial || snapshot.outcome);
+    panel.hidden = !(snapshot.armText || snapshot.tutorial || snapshot.outcome || snapshot.telegraph);
     const stepLabel = root.querySelector('#combat-step');
     const title = root.querySelector('#combat-title');
     const action = root.querySelector('#combat-action');
@@ -68,12 +71,18 @@ export function createCombatHud(actions) {
       text.textContent = snapshot.armText;
       action.hidden = false;
       action.textContent = 'Click Begin.';
+    } else if (snapshot.telegraph) {
+      stepLabel.hidden = true;
+      title.textContent = snapshot.telegraph.name;
+      text.textContent = snapshot.telegraph.text;
+      action.hidden = false;
+      action.textContent = snapshot.telegraph.action;
     } else if (snapshot.outcome) {
       stepLabel.hidden = true;
-      title.textContent = snapshot.phase === 'victory' ? 'The practice is over' : 'Try the practice again';
+      title.textContent = outcomeTitle(snapshot);
       text.textContent = snapshot.outcome;
       action.hidden = false;
-      action.textContent = snapshot.phase === 'victory' ? 'Click Return to the garden.' : 'Click Try again.';
+      action.textContent = outcomeAction(snapshot);
     } else {
       stepLabel.hidden = true;
       title.textContent = '';
@@ -82,6 +91,7 @@ export function createCombatHud(actions) {
     }
     continueButton.hidden = !snapshot.tutorial?.canContinue;
     beginButton.hidden = snapshot.phase !== 'armed';
+    restoreButton.hidden = snapshot.phase !== 'defeat' || !snapshot.boss?.checkpoint;
     retryButton.hidden = snapshot.phase !== 'defeat';
     returnButton.hidden = snapshot.phase !== 'victory';
     continueButton.classList.toggle('highlight', snapshot.tutorial?.highlight === 'continue');
@@ -94,6 +104,7 @@ export function createCombatHud(actions) {
         <strong>${fighter.name}</strong>
         <span>${fighter.hp}/${fighter.maxHp}</span>
         ${fighter.shield > 0 ? `<em>Shield ${fighter.shield}</em>` : ''}
+        ${fighter.team === 'enemy' && snapshot.boss ? bossPool(snapshot, fighter) : ''}
       </article>
     `).join('');
 
@@ -128,4 +139,35 @@ export function createCombatHud(actions) {
   }
 
   return { render };
+}
+
+function outcomeTitle(snapshot) {
+  if (snapshot.phase === 'victory') {
+    if (snapshot.kind === 'boss') return 'The boss withdraws';
+    if (snapshot.kind === 'standard') return 'The fight is finished';
+    return 'The practice is over';
+  }
+  if (snapshot.boss?.checkpoint) return 'Phase 2 is stored';
+  if (snapshot.kind === 'boss') return 'The boss fight ends';
+  if (snapshot.kind === 'standard') return 'The fight ends';
+  return 'Try the practice again';
+}
+
+function outcomeAction(snapshot) {
+  if (snapshot.phase === 'victory') return 'Click Return to the garden.';
+  if (snapshot.boss?.checkpoint) {
+    return 'Click Restore checkpoint to return to the moment phase 2 started. Click Try again to restart the fight.';
+  }
+  return 'Click Try again.';
+}
+
+function bossPool(snapshot, fighter) {
+  const ratio = fighter.maxHp > 0 ? Math.max(0, fighter.hp / fighter.maxHp) : 0;
+  const marks = snapshot.boss.divisions.map((division) => (
+    `<b style="left:${division * 100}%"></b>`
+  )).join('');
+  return `
+    <small>Phase ${snapshot.boss.phase} of ${snapshot.boss.phaseCount} · one health pool</small>
+    <div class="phase-pool" aria-hidden="true"><i style="width:${ratio * 100}%"></i>${marks}</div>
+  `;
 }

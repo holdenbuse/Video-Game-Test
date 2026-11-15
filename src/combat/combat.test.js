@@ -144,8 +144,12 @@ test('a standard fight has no lesson and the boss is one health pool', () => {
   assert.equal(start.fighters.filter((fighter) => fighter.team === 'enemy').length, 1);
   assert.equal(start.fighters.find((fighter) => fighter.team === 'enemy').maxHp, 36);
   assert.match(start.fighters.find((fighter) => fighter.team === 'enemy').name, /placeholder/i);
+  assert.equal(start.boss.phase, 1);
+  assert.equal(start.boss.phaseCount, 2);
+  assert.equal(start.boss.checkpoint, false);
+  assert.equal(start.opportunityAttacks, false);
   let guard = 0;
-  while (boss.snapshot().phase === 'fighting' && guard < 8) {
+  while (boss.snapshot().phase === 'fighting' && guard < 40) {
     guard += 1;
     const snap = boss.snapshot();
     const foe = snap.fighters.find((fighter) => fighter.team === 'enemy');
@@ -167,8 +171,98 @@ test('a standard fight has no lesson and the boss is one health pool', () => {
     boss.useOn(foe.id);
   }
   assert.equal(boss.snapshot().phase, 'victory');
+  assert.equal(boss.snapshot().fighters.find((fighter) => fighter.team === 'enemy').maxHp, 36);
   assert.match(boss.snapshot().outcome, /withdraws/);
   assert.doesNotMatch(boss.snapshot().outcome, /killed|died/);
+  assert.ok(boss.snapshot().log.some((entry) => entry.type === 'telegraph'));
+});
+
+test('a phase checkpoint restores the boss fight and the signature waits a turn', () => {
+  const session = createCombatSession(gardenNav());
+  session.arm(BOSS_ENCOUNTER);
+  session.begin();
+  assert.equal(session.restoreCheckpoint().ok, false);
+  session.endTurn();
+  assert.equal(session.runEnemyTurn().telegraphed, true);
+  const warned = session.snapshot();
+  assert.equal(warned.telegraph.name, 'Signature action');
+  assert.equal(warned.boss.signaturePending, true);
+  assert.equal(warned.boss.phase, 1);
+  assert.equal(warned.fighters.find((fighter) => fighter.id === 'orin').hp, 24);
+  assert.equal(warned.log.some((entry) => entry.type === 'signature'), false);
+
+  session.endTurn();
+  assert.equal(session.runEnemyTurn().resolved, true);
+  assert.equal(session.snapshot().fighters.find((fighter) => fighter.id === 'orin').hp, 14);
+  assert.equal(session.snapshot().boss.checkpoint, false);
+
+  assert.equal(session.selectAbility('bloom-shield').ok, true);
+  session.endTurn();
+  session.runEnemyTurn();
+  session.endTurn();
+  session.runEnemyTurn();
+  const shielded = session.snapshot().fighters.find((fighter) => fighter.id === 'orin');
+  assert.equal(shielded.hp, 12);
+  assert.equal(shielded.shield, 0);
+
+  const foe = session.snapshot().fighters.find((fighter) => fighter.team === 'enemy');
+  const orin = session.snapshot().fighters.find((fighter) => fighter.id === 'orin');
+  if (Math.hypot(orin.x - foe.x, orin.z - foe.z) > 1.6) {
+    const step = session.snapshot().destinations.find((cell) => Math.hypot(cell.x - foe.x, cell.z - foe.z) <= 1.6);
+    session.previewMove(step.x, step.z);
+    session.confirmMove();
+  }
+  while (session.snapshot().boss.phase === 1) {
+    const target = session.snapshot().fighters.find((fighter) => fighter.team === 'enemy');
+    assert.equal(session.selectAbility('basic-attack').ok, true);
+    assert.equal(session.useOn(target.id).ok, true);
+  }
+  const marked = session.snapshot();
+  const markedBoss = marked.fighters.find((fighter) => fighter.team === 'enemy');
+  assert.equal(marked.boss.phase, 2);
+  assert.equal(marked.boss.checkpoint, true);
+  assert.equal(markedBoss.maxHp, 36);
+  assert.equal(markedBoss.hp, 18);
+  assert.ok(marked.fighters.find((fighter) => fighter.id === 'orin').hp > 0);
+
+  let guard = 0;
+  while (session.snapshot().phase === 'fighting' && guard < 20) {
+    guard += 1;
+    if (session.snapshot().activeId === 'orin') session.endTurn();
+    else session.runEnemyTurn();
+  }
+  assert.equal(session.snapshot().phase, 'defeat');
+  assert.equal(session.snapshot().boss.checkpoint, true);
+  assert.equal(session.restoreCheckpoint().ok, true);
+  const restored = session.snapshot();
+  assert.equal(restored.phase, 'fighting');
+  assert.equal(restored.boss.phase, marked.boss.phase);
+  assert.equal(restored.activeId, marked.activeId);
+  assert.equal(restored.boss.signaturePending, marked.boss.signaturePending);
+  assert.deepEqual(restored.log, marked.log);
+  for (const fighter of marked.fighters) {
+    const again = restored.fighters.find((entry) => entry.id === fighter.id);
+    assert.equal(again.hp, fighter.hp);
+    assert.equal(again.ap, fighter.ap);
+    assert.equal(again.shield, fighter.shield);
+    assert.equal(again.x, fighter.x);
+    assert.equal(again.z, fighter.z);
+    assert.equal(again.movedDistance, fighter.movedDistance);
+    assert.deepEqual(again.cooldowns, fighter.cooldowns);
+  }
+
+  guard = 0;
+  while (session.snapshot().phase === 'fighting' && guard < 20) {
+    guard += 1;
+    if (session.snapshot().activeId === 'orin') session.endTurn();
+    else session.runEnemyTurn();
+  }
+  assert.equal(session.retry().ok, true);
+  const restarted = session.snapshot();
+  assert.equal(restarted.boss.phase, 1);
+  assert.equal(restarted.boss.checkpoint, false);
+  assert.equal(restarted.fighters.find((fighter) => fighter.team === 'enemy').hp, 36);
+  assert.equal(restarted.fighters.find((fighter) => fighter.id === 'orin').hp, 24);
 });
 
 test('defeat can be tried again and does not clear the encounter', () => {

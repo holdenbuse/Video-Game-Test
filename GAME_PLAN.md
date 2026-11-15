@@ -243,11 +243,15 @@ Track puzzle completions.
 - Puzzle identity does not choose the encounter.
 - Each puzzle and each encounter rewards its XP once.
 
-The standard opponent is a labeled placeholder with no story role. The boss is a temporary label with one health pool. A solve waits while a fight is still open, then the next encounter starts when that fight is won. Chapter 1 XP amounts are not assigned, so the reward is recorded once without a number. Phases, a signature action, and checkpoints remain Milestone 6.
+The standard opponent is a labeled placeholder with no story role. The boss is a temporary label with one health pool. A solve waits while a fight is still open, then the next encounter starts when that fight is won. Chapter 1 XP amounts are not assigned, so the reward is recorded once without a number. Milestone 6 adds the phases, the signature action, and the checkpoint.
 
 ### Milestone 6 — Garden boss
 
+Built and checked in the browser on 2026-11-15.
+
 Add a placeholder boss that uses the real combat rules: one HP pool, visible phases if phases exist, telegraphed signature behavior, and phase checkpoints that store the combat state.
+
+The placeholder has two phase marks on one 36-point pool. Above half is phase 1. The rest is phase 2. Health does not reset when the phase changes. On the boss's turn it either warns that the signature action is coming or resolves that hit. Bloom Shield can absorb part of the hit. Moving does not stop it. The hit that enters phase 2 stores the combat state. Defeat can restore that state or restart the fight. The checkpoint is in memory only. Save slots remain later work. The figure is still labeled Boss placeholder.
 
 Do not invent the boss's identity, motive, or meaning to the story.
 
@@ -302,6 +306,7 @@ The prototype should eventually be playable through a browser link and must buil
 | TD-019 | 2026-11-15 | The Fountain and Memory Flowers ship as labeled prototypes. Fountain beds must descend one level at a time. Memory Flowers reveals its row for seven seconds only after the player looks, and looking again clears that attempt. | Q-013 is still open. The prototypes satisfy the established rules without pretending the layouts are final. |
 | TD-020 | 2026-11-15 | The first solved puzzle, whichever it is, starts Encounter 1. Further puzzle completions are stored and do not start Encounter 2 or the boss. | Milestone 4 allows any order. Milestone 5 is the binding of the second and third completions to their encounters. |
 | TD-021 | 2026-11-15 | Completion count binds tutorial, then the standard placeholder fight, then the one-pool boss placeholder. A second solve waits until the open fight is won. Each puzzle and encounter reward is recorded once, with no Chapter 1 XP number. | Q-011 and Q-012 are still open. The 1,780 Chapter 1 target is not a payout. Boss phases and the signature action wait for Milestone 6. |
+| TD-022 | 2026-11-15 | The garden boss placeholder uses two phases on one health pool. Its signature action is announced for a full turn, then resolves. Entering phase 2 stores an in-memory checkpoint that defeat can restore. Try again restarts the fight. | Q-012 is still open. The signature damage is a Q-015 placeholder. Writing the checkpoint into a save slot is X-07. |
 
 ## 7.1 Consistency review (2026-11-13)
 

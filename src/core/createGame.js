@@ -117,6 +117,10 @@ export function createGame(host) {
       combat.retry();
       refreshCombat();
     },
+    onRestore: () => {
+      combat.restoreCheckpoint();
+      refreshCombat();
+    },
     onLeave: () => {
       combat.leave();
       const next = encounterGate.victory();

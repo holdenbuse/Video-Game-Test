@@ -224,6 +224,39 @@ canvas {
   font-style: normal;
 }
 
+.turn-order small {
+  display: block;
+  margin-top: 4px;
+  color: #8a3b12;
+  font-weight: 700;
+}
+
+.phase-pool {
+  position: relative;
+  height: 8px;
+  margin-top: 4px;
+  overflow: hidden;
+  background: #efe4d4;
+  border-radius: 99px;
+}
+
+.phase-pool i,
+.phase-pool b {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+
+.phase-pool i {
+  left: 0;
+  background: #3e7a45;
+}
+
+.phase-pool b {
+  width: 2px;
+  background: #8a3b12;
+}
+
 .combat-bar {
   position: absolute;
   left: 50%;
