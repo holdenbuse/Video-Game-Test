@@ -52,7 +52,7 @@ export function createPointerInput(dom, handlers) {
     if (leftDown) {
       const dx = event.clientX - downX;
       const dy = event.clientY - downY;
-      if (dx * dx + dy * dy > 25) {
+      if (dx * dx + dy * dy > 100) {
         leftDrag = true;
         dom.style.cursor = 'grabbing';
         handlers.onPan(event.movementX, event.movementY);

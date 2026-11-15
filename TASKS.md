@@ -32,7 +32,8 @@ Open questions cited below are defined in `GAME_DESIGN.md` §18. Do not close th
 | Milestone 0 owner approval | Verified |
 | Milestone 1 gameplay | Verified in the browser. |
 | Milestone 2 Petal Streams | Verified in the browser. |
-| Milestone 3 Garden Guardian tutorial | Verified in the browser. Do not start Milestone 4 without approval. |
+| Milestone 3 Garden Guardian tutorial | Verified in the browser. |
+| Milestone 4 Fountain and Memory Flowers | Verified in the browser. Do not start Milestone 5 without approval. |
 
 ## Planning
 
@@ -86,9 +87,9 @@ Milestone 1 uses only enough of this phase to walk and interact. The rest suppor
 |---|---|---|---|---|---|---|
 | Z-01 | Build the puzzle framework | Puzzles | Critical | Verified | G-06 | A puzzle can declare an objective, reset, record completion once, and refuse repeat rewards. A wrong action does not permanently block the garden. Checked by the completion-log tests and a browser solve, reset, and second solve of Petal Streams. |
 | Z-02 | Implement Petal Streams | Puzzles | Critical | Verified | Z-01 | The player can route the puzzle's magical energy, see feedback, get confirmation, reset, and continue exploring. Layout details that are still `TBD` use a labeled placeholder (Q-013). Checked in the browser: the light reaches the basin, the first toast is "Petal Streams complete.", and the second is "Petal Streams is already complete." |
-| Z-03 | Implement The Fountain | Puzzles | High | Not Started | Z-01, G-03 | The player can solve a growth-and-water puzzle at the fountain, reset it, and keep the completion. |
-| Z-04 | Implement Memory Flowers | Puzzles | High | Not Started | Z-01, G-04 | Four flowers are shown for seven seconds. Recreating them succeeds. Looking again resets the attempt. The general reset still exists. |
-| Z-05 | Allow any puzzle order | Puzzles | Critical | Not Started | Z-02, Z-03, Z-04 | Any of the three puzzles can be solved first, second, or third. No fourth puzzle exists. |
+| Z-03 | Implement The Fountain | Puzzles | High | Verified | Z-01, G-03 | The player can solve a growth-and-water puzzle at the fountain, reset it, and keep the completion. Checked in the browser: growing the beds one step shorter opens the water, and the toast is "The Fountain is flowing." |
+| Z-04 | Implement Memory Flowers | Puzzles | High | Verified | Z-01, G-04 | Four flowers are shown for seven seconds. Recreating them succeeds. Looking again resets the attempt. The general reset still exists. Checked in the tests and in the browser: the row stays closed until a look, then shows a countdown and the four colors. |
+| Z-05 | Allow any puzzle order | Puzzles | Critical | Verified | Z-02, Z-03, Z-04 | Any of the three puzzles can be solved first, second, or third. No fourth puzzle exists. Checked in the browser by solving the Fountain, then Memory Flowers, then Petal Streams. Only the first solve armed the tutorial. |
 | Z-06 | Separate puzzle casts from combat casts | Puzzles | Medium | Verified | Z-01 | Environmental puzzle interactions do not depend on the combat ability bar unless a later approved decision unifies them. Petal Streams turns from a world click. No combat bar is on screen. Checked while solving it in the browser. |
 
 ## Combat
@@ -200,3 +201,4 @@ Do not add tasks that implement the following unless the owner changes the desig
 | 2026-11-13 | Vercel deployment for `1ed8711` completed successfully. REL-04 marked `Verified`. |
 | 2026-11-13 | Owner approved Milestone 2 and asked for the view to move away from Orin as well as stay on them. F-05 rechecked. Z-01, Z-02, and Z-06 marked `Verified` after unit tests and a browser solve, reset, and second solve. Combat was not started. |
 | 2026-11-13 | Owner approved Milestone 3 and asked that the mouse be enough for every action. Left-drag pans the view. C-01 through C-09 and C-23 marked `Verified` after combat tests and a browser practice fight that ended with the guardian withdrawing. Encounter 2 and the boss were not started. |
+| 2026-11-15 | Owner asked for the camera to follow Orin when he moves, for clearer combat instructions, and for Milestone 4. Walking now pulls the view back onto Orin. Lesson panels name the click. Z-03, Z-04, and Z-05 marked `Verified`. Encounter 2 was not started. |

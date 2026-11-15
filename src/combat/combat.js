@@ -1,6 +1,6 @@
 import { abilityById, PLACEHOLDER_COMBAT } from '../data/abilities.js';
 import { ARM_TEXT, DEFEAT_TEXT, GARDEN_GUARDIAN, VICTORY_TEXT } from '../data/gardenGuardian.js';
-import { createTutorial } from './tutorial.js';
+import { TUTORIAL_STEPS, createTutorial } from './tutorial.js';
 
 const RULES = PLACEHOLDER_COMBAT;
 
@@ -293,7 +293,16 @@ export function createCombatSession(nav) {
       selectedAbility,
       preview: preview ? { x: preview.x, z: preview.z, ap: preview.ap, points: preview.points } : null,
       destinations: phase === 'fighting' ? destinations() : [],
-      tutorial: step ? { id: step.id, text: step.text, highlight: step.highlight, canContinue: step.requires === 'continue' } : null,
+      tutorial: step ? {
+        id: step.id,
+        title: step.title,
+        text: step.text,
+        action: step.action,
+        stepNumber: TUTORIAL_STEPS.findIndex((entry) => entry.id === step.id) + 1,
+        stepCount: TUTORIAL_STEPS.length,
+        highlight: step.highlight,
+        canContinue: step.requires === 'continue',
+      } : null,
       outcome: phase === 'victory' ? VICTORY_TEXT : phase === 'defeat' ? DEFEAT_TEXT : null,
       armText: phase === 'armed' ? ARM_TEXT : null,
       fighters: fighters.map((entry) => ({

@@ -135,18 +135,46 @@ canvas {
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(440px, calc(100% - 420px));
-  min-width: 280px;
-  padding: 14px 16px;
+  width: min(560px, calc(100% - 32px));
+  padding: 16px 18px 14px;
   color: #2a241c;
-  background: rgba(255, 248, 236, 0.96);
-  border: 1px solid rgba(90, 62, 36, 0.28);
-  border-radius: 12px;
+  background: rgba(255, 248, 236, 0.98);
+  border: 3px solid #c46a2f;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(42, 36, 28, 0.18);
 }
 
+.combat-panel h2,
 .combat-panel p {
   margin: 0;
+}
+
+.combat-panel h2 {
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+#combat-step {
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8a3b12;
+}
+
+#combat-panel-text {
+  margin-top: 8px;
+  font-size: 16px;
   line-height: 1.4;
+}
+
+#combat-action {
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #8a3b12;
 }
 
 .combat-panel button,
@@ -239,6 +267,18 @@ canvas {
 }
 
 .highlight {
-  outline: 3px solid #e07a3d;
-  box-shadow: 0 0 0 4px rgba(224, 122, 61, 0.28);
+  outline: 4px solid #e07a3d;
+  box-shadow: 0 0 0 6px rgba(224, 122, 61, 0.35);
+  animation: lesson-pulse 0.9s ease-in-out infinite;
+}
+
+.combat-bar button.highlight,
+.combat-panel button.highlight {
+  background: #ffe1c4;
+  font-weight: 700;
+}
+
+@keyframes lesson-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(224, 122, 61, 0.45); }
+  50% { box-shadow: 0 0 0 12px rgba(224, 122, 61, 0.12); }
 }

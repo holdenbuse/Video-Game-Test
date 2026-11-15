@@ -29,6 +29,12 @@ export function createIsometricCamera() {
     focus.set(x, y, z);
   }
 
+  // A walk pulls the view back onto Orin even if the player had panned away.
+  function followSubject(x, y, z) {
+    freeLook = false;
+    focus.set(x, y, z);
+  }
+
   function recenter(x, y, z) {
     freeLook = false;
     focus.set(x, y, z);
@@ -96,6 +102,7 @@ export function createIsometricCamera() {
     setFocus,
     snap,
     follow,
+    followSubject,
     recenter,
     lookAt,
     panByView,

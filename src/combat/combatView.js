@@ -5,11 +5,11 @@ export function createCombatView(scene) {
   const guardian = createGuardian();
   scene.add(guardian.mesh);
 
-  const geometry = new THREE.CircleGeometry(0.18, 8);
+  const geometry = new THREE.CircleGeometry(0.34, 16);
   geometry.rotateX(-Math.PI / 2);
   const markers = new THREE.InstancedMesh(
     geometry,
-    new THREE.MeshBasicMaterial({ color: 0xf2d27a, transparent: true, opacity: 0.85 }),
+    new THREE.MeshBasicMaterial({ color: 0xffc42e, transparent: true, opacity: 0.95 }),
     480,
   );
   markers.instanceMatrix.setUsage(THREE.DynamicDrawUsage);

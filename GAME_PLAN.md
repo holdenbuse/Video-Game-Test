@@ -221,9 +221,15 @@ Exact damage, range, and cooldown numbers may be labeled placeholders until comb
 
 ### Milestone 4 — Remaining garden puzzles
 
+Built and checked in the browser on 2026-11-15.
+
 Implement The Fountain and Memory Flowers. All three puzzles can be completed in any order.
 
 Memory Flowers shows four flowers for seven seconds. The player recreates the arrangement. Looking at the arrangement again resets that attempt. A general reset also exists.
+
+The Fountain prototype grows three beds so water can step down from the garden fountain into a lower basin. Memory Flowers stays closed until the player clicks the back row, then shows the arrangement for seven seconds. The front row is the copy. Both are labeled prototypes (Q-013). Solving any one puzzle first starts the Garden Guardian tutorial. Solving the other two stores those completions and does not start Encounter 2 or the boss.
+
+**Camera change requested with this milestone:** While Orin is walking, the view follows him, including after the player has panned away. Dragging still looks around while he is standing still.
 
 ### Milestone 5 — Encounter progression
 
@@ -288,6 +294,9 @@ The prototype should eventually be playable through a browser link and must buil
 | TD-015 | 2026-11-13 | Encounter 1 uses placeholder health, damage, range, movement, and cooldown numbers in `src/data/abilities.js`. | Q-015 is still open. The 4 AP turn, cooldown on magic, and no cooldown on basic attacks are the established rules. |
 | TD-016 | 2026-11-13 | The first puzzle completion starts the Garden Guardian tutorial. With only Petal Streams in the build, finishing it is that first completion. Winning clears Encounter 1 once. Losing offers a retry and does not advance the story. | Completion count, not puzzle identity, selects the encounter. Encounter 2 and the boss are not started. |
 | TD-017 | 2026-11-13 | The tutorial encounter sets opportunity attacks off until that system is built. | The rule still exists. This fight does not pretend the warning is unnecessary. |
+| TD-018 | 2026-11-15 | Walking Orin pulls the camera back onto him. A pan still holds while he is standing still. | The owner asked for the view to follow Orin when he moves, without giving up the ability to look around. |
+| TD-019 | 2026-11-15 | The Fountain and Memory Flowers ship as labeled prototypes. Fountain beds must descend one level at a time. Memory Flowers reveals its row for seven seconds only after the player looks, and looking again clears that attempt. | Q-013 is still open. The prototypes satisfy the established rules without pretending the layouts are final. |
+| TD-020 | 2026-11-15 | The first solved puzzle, whichever it is, starts Encounter 1. Further puzzle completions are stored and do not start Encounter 2 or the boss. | Milestone 4 allows any order. Milestone 5 is the binding of the second and third completions to their encounters. |
 
 ## 7.1 Consistency review (2026-11-13)
 

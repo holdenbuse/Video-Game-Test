@@ -11,6 +11,9 @@ import { createInteraction } from '../interaction/interaction.js';
 import { createMovement } from '../movement/movement.js';
 import { createNavGrid, rasterizeBlocks } from '../movement/navGrid.js';
 import { createCompletionLog } from '../puzzles/completionLog.js';
+import { createEncounterGate } from '../puzzles/encounterGate.js';
+import { createFountain } from '../puzzles/createFountain.js';
+import { createMemoryFlowers } from '../puzzles/createMemoryFlowers.js';
 import { createPetalStreams } from '../puzzles/createPetalStreams.js';
 import { createRenderer, createSceneLights } from '../rendering/createRenderer.js';
 import { createCombatHud } from '../ui/combatHud.js';
@@ -22,6 +25,14 @@ const TEST_MESSAGE = 'Test pedestal: interaction confirmed.';
 const BLOCKED_MESSAGE = 'Orin cannot reach that spot.';
 const PETAL_COMPLETE = 'Petal Streams complete.';
 const PETAL_ALREADY = 'Petal Streams is already complete.';
+const FOUNTAIN_COMPLETE = 'The Fountain is flowing.';
+const FOUNTAIN_ALREADY = 'The Fountain is already flowing.';
+const FOUNTAIN_RESET = 'The Fountain beds reset.';
+const MEMORY_COMPLETE = 'Memory Flowers match.';
+const MEMORY_ALREADY = 'Memory Flowers are already complete.';
+const MEMORY_STUDY = 'Study the back row. It closes after seven seconds.';
+const MEMORY_LOOK = 'The flowers open again. This attempt starts over.';
+const MEMORY_RESET = 'Memory Flowers reset. Study the arrangement again.';
 const PAN_SPEED = 8;
 
 export function createGame(host) {
@@ -34,10 +45,13 @@ export function createGame(host) {
   const garden = createGarden();
   const marker = createDestinationMarker();
   const completion = createCompletionLog();
+  const encounterGate = createEncounterGate();
   const puzzle = createPetalStreams(completion);
+  const fountain = createFountain(completion);
+  const memory = createMemoryFlowers(completion);
   const world = new THREE.Group();
   world.name = 'world';
-  world.add(garden.root, puzzle.root);
+  world.add(garden.root, puzzle.root, fountain.root, memory.root);
   scene.add(world, orin.mesh, marker.mesh);
 
   const nav = createNavGrid(GARDEN);
@@ -53,6 +67,7 @@ export function createGame(host) {
 
   const combat = createCombatSession(nav);
   const combatView = createCombatView(world);
+  let followedCombat = null;
 
   function refreshCombat(result) {
     const snapshot = combat.snapshot();
@@ -67,6 +82,14 @@ export function createGame(host) {
       if (guardian && guardian.hp > 0) {
         movement.state.yaw = Math.atan2(guardian.x - orinFighter.x, guardian.z - orinFighter.z);
       }
+      const moved = !followedCombat
+        || Math.hypot(followedCombat.x - orinFighter.x, followedCombat.z - orinFighter.z) > 0.05;
+      if (moved) {
+        view.followSubject(orinFighter.x, 0.9, orinFighter.z);
+        followedCombat = { x: orinFighter.x, z: orinFighter.z };
+      }
+    } else {
+      followedCombat = null;
     }
     if (result?.pendingEnemy) {
       window.setTimeout(() => {
@@ -121,7 +144,8 @@ export function createGame(host) {
   function placeCharacter() {
     orin.setPosition(movement.state.x, movement.state.z);
     orin.setYaw(movement.state.yaw);
-    view.follow(movement.state.x, 0.9, movement.state.z);
+    if (movement.state.moving) view.followSubject(movement.state.x, 0.9, movement.state.z);
+    else view.follow(movement.state.x, 0.9, movement.state.z);
   }
 
   function requestMove(point) {
@@ -132,8 +156,17 @@ export function createGame(host) {
       hud.showMessage(BLOCKED_MESSAGE);
       return;
     }
+    view.followSubject(movement.state.x, 0.9, movement.state.z);
     if (result.arrived) marker.hide();
     else marker.show(result.x, result.z, 'go');
+  }
+
+  function finishPuzzle(first, done, already) {
+    hud.showMessage(first ? done : already);
+    if (first && encounterGate.onFirstSolve().startTutorial) {
+      combat.arm();
+      refreshCombat();
+    }
   }
 
   function onCombatClick(hits) {
@@ -170,11 +203,21 @@ export function createGame(host) {
     const interactableId = findInteractableId(hits[0].object);
     if (interactableId && interactableId.startsWith('petal:')) {
       const outcome = puzzle.activate(interactableId);
-      if (outcome?.type === 'complete') {
-        hud.showMessage(outcome.first ? PETAL_COMPLETE : PETAL_ALREADY);
-        if (outcome.first) combat.arm();
-        refreshCombat();
-      }
+      if (outcome?.type === 'complete') finishPuzzle(outcome.first, PETAL_COMPLETE, PETAL_ALREADY);
+      return;
+    }
+    if (interactableId && interactableId.startsWith('fountain:')) {
+      const outcome = fountain.activate(interactableId);
+      if (outcome?.type === 'complete') finishPuzzle(outcome.first, FOUNTAIN_COMPLETE, FOUNTAIN_ALREADY);
+      if (outcome?.type === 'reset') hud.showMessage(FOUNTAIN_RESET);
+      return;
+    }
+    if (interactableId && interactableId.startsWith('memory:')) {
+      const outcome = memory.activate(interactableId);
+      if (outcome?.type === 'complete') finishPuzzle(outcome.first, MEMORY_COMPLETE, MEMORY_ALREADY);
+      if (outcome?.type === 'studying') hud.showMessage(MEMORY_STUDY);
+      if (outcome?.type === 'look') hud.showMessage(MEMORY_LOOK);
+      if (outcome?.type === 'reset') hud.showMessage(MEMORY_RESET);
       return;
     }
     if (interactableId === GARDEN.pedestal.id) {
@@ -219,6 +262,8 @@ export function createGame(host) {
     if (step.arrived && !interaction.update(true)) marker.hide();
     garden.update(dt);
     puzzle.update(dt);
+    fountain.update();
+    memory.update();
     marker.update(dt);
     hud.update(dt);
     placeCharacter();
@@ -273,6 +318,12 @@ export function createGame(host) {
       },
       puzzle() {
         return puzzle.debug();
+      },
+      fountain() {
+        return fountain.debug();
+      },
+      memory() {
+        return memory.debug();
       },
       combat() {
         return combat.snapshot();

@@ -4,7 +4,7 @@ export function createHud(actions) {
   hud.innerHTML = `
     <section class="hint" id="hint">
       <h1>When the Flowers Fade</h1>
-      <p>Click the garden to walk. The view stays on Orin until you move it. Drag with the left mouse button, or use the pad, to move the view. Drag with the right button to turn it. Scroll to zoom. The Orin button sticks the view back.</p>
+      <p>Click the garden to walk. The view follows Orin while he walks. Drag with the left mouse button to look around while he stands. Drag with the right button to turn the view. Scroll to zoom. The Orin button sticks the view back.</p>
       <button type="button" id="dismiss-hint">Hide</button>
     </section>
     <div class="toast" id="toast" role="status"></div>

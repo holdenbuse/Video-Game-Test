@@ -4,7 +4,10 @@ export function createCombatHud(actions) {
   root.hidden = true;
   root.innerHTML = `
     <section class="combat-panel" id="combat-panel" hidden>
+      <p id="combat-step"></p>
+      <h2 id="combat-title"></h2>
       <p id="combat-panel-text"></p>
+      <p id="combat-action"></p>
       <button type="button" id="tutorial-continue">Continue</button>
       <button type="button" id="begin-practice">Begin</button>
       <button type="button" id="retry-practice">Try again</button>
@@ -43,7 +46,36 @@ export function createCombatHud(actions) {
     const retryButton = root.querySelector('#retry-practice');
     const returnButton = root.querySelector('#return-garden');
     panel.hidden = !(snapshot.armText || snapshot.tutorial || snapshot.outcome);
-    text.textContent = snapshot.armText || snapshot.tutorial?.text || snapshot.outcome || '';
+    const stepLabel = root.querySelector('#combat-step');
+    const title = root.querySelector('#combat-title');
+    const action = root.querySelector('#combat-action');
+    if (snapshot.tutorial) {
+      stepLabel.hidden = false;
+      stepLabel.textContent = `Step ${snapshot.tutorial.stepNumber} of ${snapshot.tutorial.stepCount}`;
+      title.textContent = snapshot.tutorial.title;
+      text.textContent = snapshot.tutorial.text;
+      action.hidden = false;
+      action.textContent = snapshot.tutorial.id === 'move' && snapshot.preview
+        ? 'Now click the highlighted Move button.'
+        : snapshot.tutorial.action;
+    } else if (snapshot.armText) {
+      stepLabel.hidden = true;
+      title.textContent = 'A practice fight is starting';
+      text.textContent = snapshot.armText;
+      action.hidden = false;
+      action.textContent = 'Click Begin.';
+    } else if (snapshot.outcome) {
+      stepLabel.hidden = true;
+      title.textContent = snapshot.phase === 'victory' ? 'The practice is over' : 'Try the practice again';
+      text.textContent = snapshot.outcome;
+      action.hidden = false;
+      action.textContent = snapshot.phase === 'victory' ? 'Click Return to the garden.' : 'Click Try again.';
+    } else {
+      stepLabel.hidden = true;
+      title.textContent = '';
+      text.textContent = '';
+      action.hidden = true;
+    }
     continueButton.hidden = !snapshot.tutorial?.canContinue;
     beginButton.hidden = snapshot.phase !== 'armed';
     retryButton.hidden = snapshot.phase !== 'defeat';

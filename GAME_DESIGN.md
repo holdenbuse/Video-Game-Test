@@ -174,7 +174,7 @@ Chapter 1 places its only boss in the childhood garden, then continues through t
 
 ### 7.1 Camera
 
-Use a fully 3D isometric-style camera. The player can rotate it and zoom within limits. During ordinary exploration the view stays on Orin and follows them while they walk. Drag with the left mouse button, or use the on-screen pad, to pan the view away from Orin. Drag with the right button to turn it, and scroll to zoom. The Orin button sticks the view back, including while they walk. Keyboard shortcuts are optional. Exploration and the Garden Guardian tutorial can both be played with the mouse alone. That is the prototype answer to Q-030.
+Use a fully 3D isometric-style camera. The player can rotate it and zoom within limits. During ordinary exploration the view stays on Orin and follows them while they walk. Drag with the left mouse button, or use the on-screen pad, to pan the view away from Orin while he is standing still. When he walks, the view follows him again. Drag with the right button to turn it, and scroll to zoom. The Orin button sticks the view back. Keyboard shortcuts are optional. Exploration and the Garden Guardian tutorial can both be played with the mouse alone. That is the prototype answer to Q-030.
 
 ### 7.2 Movement
 
@@ -241,8 +241,8 @@ Puzzle interactions may express a magic branch in the environment. That is not a
 | Puzzle | Established behavior |
 |---|---|
 | Petal Streams | Introductory magical energy-routing. Introduces Petalcraft and environmental magic. The playable garden uses a labeled prototype: a fixed source, two straight flowers, one elbow, and a basin. The final layout is `TBD` (Q-013). |
-| The Fountain | Magical growth and water mechanisms. Introduces Overgrowth and environmental manipulation. Exact mechanism is `TBD` (Q-013). |
-| Memory Flowers | The player studies four flowers for seven seconds, then recreates the arrangement. Looking at the arrangement again resets the attempt. Input details may be refined later (Q-013). No branch is assigned to this puzzle. Do not assign one only to mirror the four schools. |
+| The Fountain | Magical growth and water mechanisms. Introduces Overgrowth and environmental manipulation. The playable garden uses a labeled prototype beside the fountain: three beds must grow one step shorter than the one before them so water can reach a lower basin. The final mechanism is `TBD` (Q-013). |
+| Memory Flowers | The player studies four flowers for seven seconds, then recreates the arrangement. Looking at the arrangement again resets the attempt. The playable garden keeps the row closed until the player looks, then opens it for seven seconds. The front row is the copy. A stone resets the attempt too. Input details may be refined later (Q-013). No branch is assigned to this puzzle. Do not assign one only to mirror the four schools. |
 
 ## 9. Combat
 
@@ -579,7 +579,7 @@ Answer these before the milestone that would otherwise invent the answer. Milest
 | Q-027 | Is Mira's failed protection the same event as her final-battle death? | That later chapter |
 | Q-028 | In which chapters do Arthur and the Old Stranger first appear? | Those chapters |
 | Q-029 | Who is the antagonist? Do not answer this in early content. | The intended reveal only |
-| Q-030 | Resolved for the prototype on 2026-11-13. The player may pan the garden view with the mouse at any time. The view follows Orin until that pan, and recenter sticks it back. Keyboard shortcuts are optional. See §7.1. | Resolved |
+| Q-030 | Resolved for the prototype on 2026-11-15. The player may pan the garden view with the mouse while Orin is standing still. When Orin walks, the view follows him. The Orin button also sticks the view back. Keyboard shortcuts are optional. See §7.1. | Resolved |
 | Q-031 | Is any movement control required besides click-to-move? | Movement implementation |
 | Q-032 | Confirm that the childhood garden party is Orin alone. | Garden combat |
 | Q-033 | How much catch-up XP do Chapters 9 and 10 contain? | Those reward tables |

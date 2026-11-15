@@ -67,15 +67,15 @@ All three exist in the garden and can be solved in any order.
 
 #### Petal Streams
 
-An introductory energy-routing puzzle. It introduces Petalcraft and environmental magic. The playable prototype, labeled in the garden, puts a fixed bloom, two straight flowers, one elbow, and a basin on the north-west lawn. The player turns the flowers so the light reaches the basin. A stone resets them. The first solution is stored for the browser session and does not start combat. The final objects and layout are still `TBD` (Q-013).
+An introductory energy-routing puzzle. It introduces Petalcraft and environmental magic. The playable prototype, labeled in the garden, puts a fixed bloom, two straight flowers, one elbow, and a basin on the north-west lawn. The player turns the flowers so the light reaches the basin. A stone resets them. The first solution is stored for the browser session. If it is the first puzzle solved, it starts the Garden Guardian tutorial. The final objects and layout are still `TBD` (Q-013).
 
 #### The Fountain
 
-An environmental puzzle about magical growth and water mechanisms. It introduces Overgrowth and manipulating the environment. The exact mechanism is `TBD` (Q-013).
+An environmental puzzle about magical growth and water mechanisms. It introduces Overgrowth and manipulating the environment. The playable prototype, labeled beside the fountain, asks the player to grow three beds one step shorter than the last so water reaches a lower basin. A stone resets the beds. The exact mechanism is still `TBD` (Q-013).
 
 #### Memory Flowers
 
-The player studies an arrangement of four flowers for seven seconds, then recreates it. Looking at the arrangement again resets that attempt. The general puzzle reset also exists. Input and layout details may be refined later (Q-013).
+The player studies an arrangement of four flowers for seven seconds, then recreates it. Looking at the arrangement again resets that attempt. The general puzzle reset also exists. In the prototype the back row stays closed until the player clicks it, then stays open for seven seconds. The front row is the copy. Input and layout details may be refined later (Q-013).
 
 No magic branch is assigned to Memory Flowers. Leave it unassigned.
 
@@ -105,7 +105,7 @@ Bloom Shield is the established starting defensive ability, so it is the defensi
 
 The guardian's defeat uses the normal combat result. The story outcome is not a death.
 
-In the current prototype, the first puzzle completion starts this practice fight. Petal Streams is the only puzzle in the build, so finishing it is that first completion. The panels are interface instructions, not book pages. Damage, range, and cooldown numbers are labeled placeholders (Q-015). Petal Dart, Root Snare, and Resonant Pulse exist as data and are not taught in this fight (Q-003).
+In the current prototype, the first puzzle completion starts this practice fight, whichever of the three puzzles it is. Solving another puzzle stores that completion and does not start Encounter 2. The lesson panels name the click to make. They are interface instructions, not book pages. Damage, range, and cooldown numbers are labeled placeholders (Q-015). Petal Dart, Root Snare, and Resonant Pulse exist as data and are not taught in this fight (Q-003).
 
 #### Encounter 2 — standard battle
 
