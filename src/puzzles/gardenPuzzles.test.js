@@ -66,12 +66,29 @@ test('memory flowers stay hidden until the seven seconds end, and looking again 
   assert.equal(MEMORY_COLORS.length, 4);
 });
 
-test('only the first solved puzzle asks for the tutorial', () => {
+test('completion count selects tutorial, then a standard fight, then the boss', () => {
   const gate = createEncounterGate();
-  assert.equal(gate.onFirstSolve().startTutorial, true);
-  assert.equal(gate.onFirstSolve().startTutorial, false);
-  assert.equal(gate.onFirstSolve().startTutorial, false);
-  assert.equal(gate.bound(), 1);
+  assert.equal(gate.onFirstSolve('memory-flowers').encounter, 'tutorial');
+  assert.equal(gate.onFirstSolve('fountain').encounter, null);
+  assert.equal(gate.onFirstSolve('memory-flowers').reward, false);
+
+  const afterTutorial = gate.victory();
+  assert.equal(afterTutorial.finished, 'tutorial');
+  assert.equal(afterTutorial.reward, true);
+  assert.equal(afterTutorial.encounter, 'standard');
+
+  assert.equal(gate.onFirstSolve('petal-streams').encounter, null);
+  const afterStandard = gate.victory();
+  assert.equal(afterStandard.finished, 'standard');
+  assert.equal(afterStandard.reward, true);
+  assert.equal(afterStandard.encounter, 'boss');
+
+  const afterBoss = gate.victory();
+  assert.equal(afterBoss.finished, 'boss');
+  assert.equal(afterBoss.encounter, null);
+  assert.equal(afterBoss.reward, true);
+  assert.equal(gate.victory().reward, false);
+  assert.equal(gate.bound(), 3);
 });
 
 test('the new puzzle controls stand on open lawn', () => {

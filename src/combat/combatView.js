@@ -29,9 +29,10 @@ export function createCombatView(scene) {
   const dummy = new THREE.Object3D();
 
   function render(snapshot) {
-    const enemy = snapshot.fighters.find((fighter) => fighter.id === 'garden-guardian');
+    const enemy = snapshot.fighters.find((fighter) => fighter.team === 'enemy');
     const showEnemy = enemy && (snapshot.phase === 'fighting' || snapshot.phase === 'victory' || snapshot.phase === 'defeat');
     guardian.setVisible(Boolean(showEnemy && enemy.hp > 0));
+    guardian.setEncounter(snapshot.kind, enemy?.id);
     if (enemy) {
       guardian.setPosition(enemy.x, enemy.z);
       const orin = snapshot.fighters.find((fighter) => fighter.id === 'orin');

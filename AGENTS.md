@@ -21,9 +21,11 @@ The owner approved Milestone 2 on 2026-11-13 and asked for the isometric view to
 
 The owner approved Milestone 3 on 2026-11-13 and asked that every action be possible with the mouse. Milestone 3 is implemented: left-drag pans the view, and the first puzzle completion starts the Garden Guardian practice fight. The fight can be finished with the mouse.
 
-The owner approved Milestone 4 on 2026-11-15. The camera follows Orin while he walks. The Fountain and Memory Flowers can be solved in any order with Petal Streams. Only the first solve starts the tutorial. Encounter 2 and the garden boss are not started.
+The owner approved Milestone 4 on 2026-11-15. The camera follows Orin while he walks. The Fountain and Memory Flowers can be solved in any order with Petal Streams.
 
-Do not start Milestone 5 until the owner approves it. Finish and verify one milestone before starting the next major milestone.
+The owner approved Milestone 5 on 2026-11-15. Completion count selects the encounters: the first solve starts the tutorial, the second a standard placeholder fight, and the third a one-pool boss placeholder. Puzzle identity does not choose the fight. Phases, a signature action, and boss checkpoints are not in this build.
+
+Do not start Milestone 6 until the owner approves it. Finish and verify one milestone before starting the next major milestone.
 
 Run the prototype with `npm install`, then `npm run dev`. Pathfinding checks are `npm test`. The production build is `npm run build`.
 

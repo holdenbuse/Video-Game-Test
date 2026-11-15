@@ -48,8 +48,26 @@ export function createGuardian() {
     root.visible = visible;
   }
 
-  return { mesh: root, setPosition, setYaw, setVisible };
+  function setEncounter(kind, fighterId = 'garden-guardian') {
+    const look = LOOKS[kind] ?? LOOKS.tutorial;
+    leaf.color.setHex(look.leaf);
+    moss.color.setHex(look.moss);
+    root.scale.setScalar(look.scale);
+    const id = `fighter:${fighterId}`;
+    root.userData.interactableId = id;
+    root.traverse((child) => {
+      if (child.isMesh) child.userData.interactableId = id;
+    });
+  }
+
+  return { mesh: root, setPosition, setYaw, setVisible, setEncounter };
 }
+
+const LOOKS = {
+  tutorial: { leaf: 0x2f8f4e, moss: 0x67b15a, scale: 1 },
+  standard: { leaf: 0x8d8a82, moss: 0xb7b1a6, scale: 1 },
+  boss: { leaf: 0x3e5c3a, moss: 0x6d8f62, scale: 1.2 },
+};
 
 function add(parent, geometry, material, x, y, z) {
   const mesh = new THREE.Mesh(geometry, material);

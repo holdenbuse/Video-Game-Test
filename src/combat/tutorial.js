@@ -73,6 +73,15 @@ export const TUTORIAL_STEPS = [
   },
 ];
 
+export function createOpenPlay() {
+  return {
+    current: () => null,
+    allows: () => true,
+    complete: () => false,
+    acknowledge: () => false,
+  };
+}
+
 export function createTutorial() {
   let index = 0;
   let finished = false;

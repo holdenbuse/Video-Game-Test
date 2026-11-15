@@ -1,6 +1,7 @@
 import { abilityById, PLACEHOLDER_COMBAT } from '../data/abilities.js';
-import { ARM_TEXT, DEFEAT_TEXT, GARDEN_GUARDIAN, VICTORY_TEXT } from '../data/gardenGuardian.js';
-import { TUTORIAL_STEPS, createTutorial } from './tutorial.js';
+import { TUTORIAL_ENCOUNTER } from '../data/encounters.js';
+import { GARDEN_GUARDIAN } from '../data/gardenGuardian.js';
+import { TUTORIAL_STEPS, createOpenPlay, createTutorial } from './tutorial.js';
 
 const RULES = PLACEHOLDER_COMBAT;
 
@@ -12,12 +13,12 @@ export function movementAp(movedDistance, travel) {
 }
 
 export function createCombatSession(nav) {
-  const initial = startingFighters();
-  let fighters = cloneFighters(initial);
+  let definition = TUTORIAL_ENCOUNTER;
+  let fighters = fightersFrom(definition);
   let order = turnOrder(fighters);
   let turn = 0;
   let phase = 'exploring';
-  let cleared = false;
+  const cleared = new Set();
   let tutorial = createTutorial();
   let preview = null;
   let selectedAbility = null;
@@ -32,10 +33,10 @@ export function createCombatSession(nav) {
   }
 
   function begin() {
-    fighters = cloneFighters(initial);
+    fighters = fightersFrom(definition);
     order = turnOrder(fighters);
     turn = 0;
-    tutorial = createTutorial();
+    tutorial = definition.kind === 'tutorial' ? createTutorial() : createOpenPlay();
     preview = null;
     selectedAbility = null;
     log = [];
@@ -43,8 +44,12 @@ export function createCombatSession(nav) {
     startTurn();
   }
 
-  function arm() {
-    if (cleared || phase === 'fighting' || phase === 'armed') return false;
+  function arm(next = TUTORIAL_ENCOUNTER) {
+    if (!next || cleared.has(next.id)) return false;
+    if (phase === 'fighting' || phase === 'armed' || phase === 'victory' || phase === 'defeat') return false;
+    definition = next;
+    fighters = fightersFrom(definition);
+    order = turnOrder(fighters);
     phase = 'armed';
     return true;
   }
@@ -201,11 +206,16 @@ export function createCombatSession(nav) {
           }
         }
       }
-      const now = Math.hypot(foe.x - fighter.x, foe.z - fighter.z);
-      if (now <= RULES.meleeRange + 0.05 && fighter.ap >= 1 && nav.lineOfSight(fighter.x, fighter.z, foe.x, foe.z)) {
+      let attacks = 0;
+      const limit = definition.attacksPerTurn ?? 1;
+      while (attacks < limit && phase === 'fighting' && fighter.ap >= 1) {
+        const now = Math.hypot(foe.x - fighter.x, foe.z - fighter.z);
+        if (now > RULES.meleeRange + 0.05 || !nav.lineOfSight(fighter.x, fighter.z, foe.x, foe.z)) break;
         fighter.ap -= 1;
         applyDamage(foe, fighter.attackDamage);
         log.push({ type: 'ability', id: fighter.id, ability: 'basic-attack', target: foe.id });
+        attacks += 1;
+        finishIfNeeded();
       }
     }
     fighter.ap = 0;
@@ -246,11 +256,11 @@ export function createCombatSession(nav) {
   }
 
   function finishIfNeeded() {
-    const guardian = fighters.find((fighter) => fighter.id === 'garden-guardian');
+    const enemy = fighters.find((fighter) => fighter.team === 'enemy');
     const orin = fighters.find((fighter) => fighter.id === 'orin');
-    if (guardian && guardian.hp <= 0) {
+    if (enemy && enemy.hp <= 0) {
       phase = 'victory';
-      cleared = true;
+      cleared.add(definition.id);
       if (orin) {
         orin.hp = orin.maxHp;
         orin.shield = 0;
@@ -287,8 +297,10 @@ export function createCombatSession(nav) {
     const step = phase === 'fighting' ? tutorial.current() : null;
     return {
       phase,
-      cleared,
-      opportunityAttacks: GARDEN_GUARDIAN.opportunityAttacks,
+      cleared: cleared.has(definition.id),
+      kind: definition.kind,
+      encounterId: definition.id,
+      opportunityAttacks: definition.opportunityAttacks,
       activeId: fighter?.id ?? null,
       selectedAbility,
       preview: preview ? { x: preview.x, z: preview.z, ap: preview.ap, points: preview.points } : null,
@@ -303,8 +315,8 @@ export function createCombatSession(nav) {
         highlight: step.highlight,
         canContinue: step.requires === 'continue',
       } : null,
-      outcome: phase === 'victory' ? VICTORY_TEXT : phase === 'defeat' ? DEFEAT_TEXT : null,
-      armText: phase === 'armed' ? ARM_TEXT : null,
+      outcome: phase === 'victory' ? definition.victoryText : phase === 'defeat' ? definition.defeatText : null,
+      armText: phase === 'armed' ? definition.armText : null,
       fighters: fighters.map((entry) => ({
         id: entry.id,
         name: entry.name,
@@ -355,34 +367,36 @@ export function strikeAllowed(nav, from, to, range) {
   return null;
 }
 
-function startingFighters() {
+function fightersFrom(definition) {
+  const player = definition.player;
+  const enemy = definition.enemy;
   return [
     {
       id: 'orin',
       name: 'Orin',
       team: 'player',
-      x: GARDEN_GUARDIAN.orin.x,
-      z: GARDEN_GUARDIAN.orin.z,
-      hp: GARDEN_GUARDIAN.orinHp,
-      maxHp: GARDEN_GUARDIAN.orinHp,
-      initiative: GARDEN_GUARDIAN.orinInitiative,
-      attackDamage: GARDEN_GUARDIAN.orinAttack,
+      x: player.x,
+      z: player.z,
+      hp: player.hp,
+      maxHp: player.hp,
+      initiative: player.initiative,
+      attackDamage: player.attack,
       ap: RULES.apPerTurn,
       movedDistance: 0,
       shield: 0,
       cooldowns: {},
-      abilities: GARDEN_GUARDIAN.tutorialAbilities.slice(),
+      abilities: player.abilities.slice(),
     },
     {
-      id: 'garden-guardian',
-      name: 'Garden Guardian',
+      id: enemy.id,
+      name: enemy.name,
       team: 'enemy',
-      x: GARDEN_GUARDIAN.guardian.x,
-      z: GARDEN_GUARDIAN.guardian.z,
-      hp: GARDEN_GUARDIAN.guardianHp,
-      maxHp: GARDEN_GUARDIAN.guardianHp,
-      initiative: GARDEN_GUARDIAN.guardianInitiative,
-      attackDamage: GARDEN_GUARDIAN.guardianAttack,
+      x: enemy.x,
+      z: enemy.z,
+      hp: enemy.hp,
+      maxHp: enemy.hp,
+      initiative: enemy.initiative,
+      attackDamage: enemy.attack,
       ap: RULES.apPerTurn,
       movedDistance: 0,
       shield: 0,
@@ -390,14 +404,6 @@ function startingFighters() {
       abilities: ['basic-attack'],
     },
   ];
-}
-
-function cloneFighters(source) {
-  return source.map((fighter) => ({
-    ...fighter,
-    cooldowns: { ...fighter.cooldowns },
-    abilities: fighter.abilities.slice(),
-  }));
 }
 
 function turnOrder(list) {

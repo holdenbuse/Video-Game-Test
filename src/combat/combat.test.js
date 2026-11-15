@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { ABILITIES } from '../data/abilities.js';
+import { BOSS_ENCOUNTER, STANDARD_ENCOUNTER } from '../data/encounters.js';
 import { AGENT_RADIUS, GARDEN } from '../data/gardenLayout.js';
 import { createNavGrid, rasterizeBlocks } from '../movement/navGrid.js';
 import { createCombatSession, knownAbilityIds, movementAp, strikeAllowed } from './combat.js';
@@ -121,6 +122,53 @@ test('victory withdraws the guardian and restores Orin without calling it a deat
   assert.match(done.outcome, /not a death/);
   assert.doesNotMatch(done.outcome, /killed|died/);
   assert.equal(session.arm(), false);
+});
+
+test('a standard fight has no lesson and the boss is one health pool', () => {
+  const session = createCombatSession(gardenNav());
+  assert.equal(session.arm(STANDARD_ENCOUNTER), true);
+  session.begin();
+  const opened = session.snapshot();
+  assert.equal(opened.kind, 'standard');
+  assert.equal(opened.tutorial, null);
+  assert.equal(session.endTurn().pendingEnemy, true);
+  session.runEnemyTurn();
+  const attacks = session.snapshot().log.filter((entry) => entry.ability === 'basic-attack' && entry.id === 'placeholder-opponent');
+  assert.equal(attacks.length, 2);
+  assert.equal(session.arm(BOSS_ENCOUNTER), false);
+
+  const boss = createCombatSession(gardenNav());
+  boss.arm(BOSS_ENCOUNTER);
+  boss.begin();
+  const start = boss.snapshot();
+  assert.equal(start.fighters.filter((fighter) => fighter.team === 'enemy').length, 1);
+  assert.equal(start.fighters.find((fighter) => fighter.team === 'enemy').maxHp, 36);
+  assert.match(start.fighters.find((fighter) => fighter.team === 'enemy').name, /placeholder/i);
+  let guard = 0;
+  while (boss.snapshot().phase === 'fighting' && guard < 8) {
+    guard += 1;
+    const snap = boss.snapshot();
+    const foe = snap.fighters.find((fighter) => fighter.team === 'enemy');
+    const orin = snap.fighters.find((fighter) => fighter.id === 'orin');
+    if (snap.activeId !== 'orin') {
+      boss.runEnemyTurn();
+      continue;
+    }
+    if (Math.hypot(orin.x - foe.x, orin.z - foe.z) > 1.6) {
+      const step = snap.destinations.find((cell) => Math.hypot(cell.x - foe.x, cell.z - foe.z) <= 1.6);
+      boss.previewMove(step.x, step.z);
+      boss.confirmMove();
+    }
+    if (!boss.snapshot().abilities.find((ability) => ability.id === 'basic-attack').ready) {
+      boss.endTurn();
+      continue;
+    }
+    boss.selectAbility('basic-attack');
+    boss.useOn(foe.id);
+  }
+  assert.equal(boss.snapshot().phase, 'victory');
+  assert.match(boss.snapshot().outcome, /withdraws/);
+  assert.doesNotMatch(boss.snapshot().outcome, /killed|died/);
 });
 
 test('defeat can be tried again and does not clear the encounter', () => {

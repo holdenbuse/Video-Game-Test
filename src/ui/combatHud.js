@@ -60,7 +60,11 @@ export function createCombatHud(actions) {
         : snapshot.tutorial.action;
     } else if (snapshot.armText) {
       stepLabel.hidden = true;
-      title.textContent = 'A practice fight is starting';
+      title.textContent = snapshot.kind === 'boss'
+        ? 'The garden boss is selected'
+        : snapshot.kind === 'standard'
+          ? 'A standard fight is starting'
+          : 'A practice fight is starting';
       text.textContent = snapshot.armText;
       action.hidden = false;
       action.textContent = 'Click Begin.';

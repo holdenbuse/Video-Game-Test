@@ -33,7 +33,8 @@ Open questions cited below are defined in `GAME_DESIGN.md` §18. Do not close th
 | Milestone 1 gameplay | Verified in the browser. |
 | Milestone 2 Petal Streams | Verified in the browser. |
 | Milestone 3 Garden Guardian tutorial | Verified in the browser. |
-| Milestone 4 Fountain and Memory Flowers | Verified in the browser. Do not start Milestone 5 without approval. |
+| Milestone 4 Fountain and Memory Flowers | Verified in the browser. |
+| Milestone 5 Encounter progression | Verified in the browser. Do not start Milestone 6 without approval. |
 
 ## Planning
 
@@ -107,8 +108,8 @@ Milestone 3 is the tutorial slice. Later rows are established rules and must not
 | C-07 | Implement tutorial UI | Combat | Critical | Verified | C-01 | Panels explain one idea at a time, highlight the control, pause for a required guided action, and dismiss themselves. None of this text is a book page. Checked through the browser lesson. |
 | C-08 | Implement the Garden Guardian tutorial | Combat | Critical | Verified | C-03, C-04, C-06, C-07 | The player can finish Encounter 1 against the nonlethal guardian. The result is not presented as a death. Bloom Shield is the defensive lesson. Checked in the browser: the closing panel says the guardian withdraws and this was not a death. |
 | C-09 | Implement enemy turns | Combat | Critical | Verified | C-01 | The guardian acts on its initiative. The tutorial AI may be simple, but it uses the enemy-turn system rather than a scripted player-only sequence. Checked when the guardian struck after Orin's first turn and reduced the shield. |
-| C-10 | Implement Encounter 2 | Combat | High | Not Started | C-08, Z-05 | The second completion starts a standard battle with more freedom than the tutorial. The enemy stays a labeled placeholder until Q-011 is answered. |
-| C-11 | Implement encounter-order progression | Combat | Critical | Not Started | Z-05, C-08, C-10, C-12 | Completion count, not puzzle identity, selects tutorial, then standard battle, then boss. A second puzzle cannot increment the count before the current completion is bound to its encounter. Rewards happen once. |
+| C-10 | Implement Encounter 2 | Combat | High | Verified | C-08, Z-05 | The second completion starts a standard battle with more freedom than the tutorial. The enemy stays a labeled placeholder until Q-011 is answered. Checked in the browser: after the tutorial, the panel says the opponent has no story role and there is no lesson. |
+| C-11 | Implement encounter-order progression | Combat | Critical | Verified | Z-05, C-08, C-10, C-12 | Completion count, not puzzle identity, selects tutorial, then standard battle, then boss. A second puzzle cannot increment the count before the current completion is bound to its encounter. Rewards happen once. Checked by solving Memory Flowers first, the Fountain second, and Petal Streams third. The boss framework in C-12 is still open; this count starts a one-pool placeholder. |
 | C-12 | Implement the garden boss framework | Combat | High | Not Started | C-01 | A boss can run with one HP pool and a signature action. A placeholder has no canonical name or story role (Q-012). Encounter selection is C-11, not this task. |
 | C-13 | Implement boss phase checkpoints | Combat | High | Not Started | C-12 | A phase checkpoint restores the exact in-memory combat state. Persisting that checkpoint in a save slot is completed with X-07. |
 | C-14 | Implement opportunity attacks | Combat | Medium | Not Started | C-03 | Leaving melee range can cause one automatic attack per eligible combatant per round. It spends no AP. The move preview warns the player. |
@@ -202,3 +203,4 @@ Do not add tasks that implement the following unless the owner changes the desig
 | 2026-11-13 | Owner approved Milestone 2 and asked for the view to move away from Orin as well as stay on them. F-05 rechecked. Z-01, Z-02, and Z-06 marked `Verified` after unit tests and a browser solve, reset, and second solve. Combat was not started. |
 | 2026-11-13 | Owner approved Milestone 3 and asked that the mouse be enough for every action. Left-drag pans the view. C-01 through C-09 and C-23 marked `Verified` after combat tests and a browser practice fight that ended with the guardian withdrawing. Encounter 2 and the boss were not started. |
 | 2026-11-15 | Owner asked for the camera to follow Orin when he moves, for clearer combat instructions, and for Milestone 4. Walking now pulls the view back onto Orin. Lesson panels name the click. Z-03, Z-04, and Z-05 marked `Verified`. Encounter 2 was not started. |
+| 2026-11-15 | Owner approved Milestone 5. C-10 and C-11 marked `Verified` after a browser run that solved the three puzzles in an order other than the fight order. The second fight had no lesson. The third started a one-pool boss placeholder. C-12 was not started. |

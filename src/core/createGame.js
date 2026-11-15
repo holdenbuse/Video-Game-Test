@@ -11,6 +11,9 @@ import { createInteraction } from '../interaction/interaction.js';
 import { createMovement } from '../movement/movement.js';
 import { createNavGrid, rasterizeBlocks } from '../movement/navGrid.js';
 import { createCompletionLog } from '../puzzles/completionLog.js';
+import { encounterByKind } from '../data/encounters.js';
+import { FOUNTAIN_ID } from '../puzzles/fountain.js';
+import { MEMORY_ID } from '../puzzles/memoryFlowers.js';
 import { createEncounterGate } from '../puzzles/encounterGate.js';
 import { createFountain } from '../puzzles/createFountain.js';
 import { createMemoryFlowers } from '../puzzles/createMemoryFlowers.js';
@@ -75,7 +78,7 @@ export function createGame(host) {
     combatView.render(snapshot);
     if (snapshot.phase === 'fighting' || snapshot.phase === 'victory' || snapshot.phase === 'defeat') {
       const orinFighter = snapshot.fighters.find((fighter) => fighter.id === 'orin');
-      const guardian = snapshot.fighters.find((fighter) => fighter.id === 'garden-guardian');
+      const guardian = snapshot.fighters.find((fighter) => fighter.team === 'enemy');
       movement.cancel();
       movement.state.x = orinFighter.x;
       movement.state.z = orinFighter.z;
@@ -116,6 +119,8 @@ export function createGame(host) {
     },
     onLeave: () => {
       combat.leave();
+      const next = encounterGate.victory();
+      if (next.encounter) combat.arm(encounterByKind(next.encounter));
       refreshCombat();
     },
     onAbility: (id) => refreshCombat(combat.selectAbility(id)),
@@ -161,12 +166,12 @@ export function createGame(host) {
     else marker.show(result.x, result.z, 'go');
   }
 
-  function finishPuzzle(first, done, already) {
+  function finishPuzzle(puzzleId, first, done, already) {
     hud.showMessage(first ? done : already);
-    if (first && encounterGate.onFirstSolve().startTutorial) {
-      combat.arm();
-      refreshCombat();
-    }
+    if (!first) return;
+    const next = encounterGate.onFirstSolve(puzzleId);
+    if (next.encounter) combat.arm(encounterByKind(next.encounter));
+    refreshCombat();
   }
 
   function onCombatClick(hits) {
@@ -203,18 +208,18 @@ export function createGame(host) {
     const interactableId = findInteractableId(hits[0].object);
     if (interactableId && interactableId.startsWith('petal:')) {
       const outcome = puzzle.activate(interactableId);
-      if (outcome?.type === 'complete') finishPuzzle(outcome.first, PETAL_COMPLETE, PETAL_ALREADY);
+      if (outcome?.type === 'complete') finishPuzzle(PETAL_STREAMS.id, outcome.first, PETAL_COMPLETE, PETAL_ALREADY);
       return;
     }
     if (interactableId && interactableId.startsWith('fountain:')) {
       const outcome = fountain.activate(interactableId);
-      if (outcome?.type === 'complete') finishPuzzle(outcome.first, FOUNTAIN_COMPLETE, FOUNTAIN_ALREADY);
+      if (outcome?.type === 'complete') finishPuzzle(FOUNTAIN_ID, outcome.first, FOUNTAIN_COMPLETE, FOUNTAIN_ALREADY);
       if (outcome?.type === 'reset') hud.showMessage(FOUNTAIN_RESET);
       return;
     }
     if (interactableId && interactableId.startsWith('memory:')) {
       const outcome = memory.activate(interactableId);
-      if (outcome?.type === 'complete') finishPuzzle(outcome.first, MEMORY_COMPLETE, MEMORY_ALREADY);
+      if (outcome?.type === 'complete') finishPuzzle(MEMORY_ID, outcome.first, MEMORY_COMPLETE, MEMORY_ALREADY);
       if (outcome?.type === 'studying') hud.showMessage(MEMORY_STUDY);
       if (outcome?.type === 'look') hud.showMessage(MEMORY_LOOK);
       if (outcome?.type === 'reset') hud.showMessage(MEMORY_RESET);

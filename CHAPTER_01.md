@@ -105,15 +105,15 @@ Bloom Shield is the established starting defensive ability, so it is the defensi
 
 The guardian's defeat uses the normal combat result. The story outcome is not a death.
 
-In the current prototype, the first puzzle completion starts this practice fight, whichever of the three puzzles it is. Solving another puzzle stores that completion and does not start Encounter 2. The lesson panels name the click to make. They are interface instructions, not book pages. Damage, range, and cooldown numbers are labeled placeholders (Q-015). Petal Dart, Root Snare, and Resonant Pulse exist as data and are not taught in this fight (Q-003).
+In the current prototype, the first puzzle completion starts this practice fight, whichever of the three puzzles it is. The lesson panels name the click to make. They are interface instructions, not book pages. Damage, range, and cooldown numbers are labeled placeholders (Q-015). Petal Dart, Root Snare, and Resonant Pulse exist as data and are not taught in this fight (Q-003).
 
 #### Encounter 2 — standard battle
 
-A standard introductory battle. The player uses the mechanics from Encounter 1 with more freedom. The enemy is `TBD` (Q-011). Use a labeled placeholder until the owner defines the enemy. Do not give that placeholder a role in the academy conspiracy or a relationship to Orin.
+A standard introductory battle. The player uses the mechanics from Encounter 1 with more freedom. The enemy is `TBD` (Q-011). The prototype uses a labeled placeholder opponent with no story role. There is no guided lesson. Move, attack, and defend in any order.
 
 #### Encounter 3 — garden boss
 
-The boss begins after the third puzzle is completed. Identity, mechanics, and phases are `TBD` (Q-012).
+The boss begins after the third puzzle is completed. Identity, mechanics, and phases are `TBD` (Q-012). The prototype starts a temporary one-pool fight with no story name. Phases, a signature action, and checkpoints are not in this fight yet.
 
 A placeholder may exercise the boss framework: one HP pool, visible phase divisions if more than one phase is needed to test checkpoints, a signature action, and a checkpoint that stores the combat state. The placeholder needs a temporary label in data, not a canonical name or story purpose.
 
