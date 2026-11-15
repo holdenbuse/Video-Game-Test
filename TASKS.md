@@ -35,7 +35,8 @@ Open questions cited below are defined in `GAME_DESIGN.md` §18. Do not close th
 | Milestone 3 Garden Guardian tutorial | Verified in the browser. |
 | Milestone 4 Fountain and Memory Flowers | Verified in the browser. |
 | Milestone 5 Encounter progression | Verified in the browser. |
-| Milestone 6 Garden boss | Verified in the browser. Do not start Milestone 7 without approval. |
+| Milestone 6 Garden boss | Verified in the browser. |
+| Milestone 7 Story presentation | Verified in the browser. Do not start Milestone 8 without approval. |
 
 ## Planning
 
@@ -128,12 +129,12 @@ Milestone 3 is the tutorial slice. Later rows are established rules and must not
 
 | ID | Task | Phase | Priority | Status | Dependencies | Completion criteria |
 |---|---|---|---|---|---|---|
-| S-01 | Build the story-event system | Story | Critical | Not Started | F-03 | Chapter events are data with order and flags, not a single hard-coded script. |
-| S-02 | Implement the ancient-book presentation | Story | High | Not Started | S-01 | Illustrated pages, short captions, and page turns can play. Placeholder art is allowed. The book cannot start a puzzle, a battle, or a control lesson. |
-| S-03 | Implement page-turn transitions | Story | High | Not Started | S-02 | Opening, the time jump, and the chapter ending change pages and then enter the correct 3D scene. |
-| S-04 | Implement the dialogue system | Story | High | Not Started | S-01 | In-world lines can play with a speaker. Dialogue is not displayed as a book page. |
-| S-05 | Implement character interaction | Story | High | Not Started | G-06, S-04 | Orin can approach a story character and start that character's current interaction. |
-| S-06 | Implement the invitation | Story | High | Not Started | C-12, S-04 | After the garden boss, the academy head invites Orin on the estate. Q-001 and Q-009 stay open in the text. |
+| S-01 | Build the story-event system | Story | Critical | Verified | F-03 | Chapter events are data with order and flags, not a single hard-coded script. Checked by the story tests: the invitation cannot start before the boss flag, and finishing one event does not start the next. |
+| S-02 | Implement the ancient-book presentation | Story | High | Verified | S-01 | Illustrated pages, short captions, and page turns can play. Placeholder art is allowed. The book cannot start a puzzle, a battle, or a control lesson. Checked in the browser: three pages, placeholder plates, and no control words. The walk hint appeared after the book closed. |
+| S-03 | Implement page-turn transitions | Story | High | Verified | S-02 | Opening, the time jump, and the chapter ending change pages and then enter the correct 3D scene. Checked: the opening enters the garden in the browser. The same runner sends the time jump to `academy` and the chapter ending to `chapter-2`. Those two scenes are not built yet, and those events are not played in the garden. |
+| S-04 | Implement the dialogue system | Story | High | Verified | S-01 | In-world lines can play with a speaker. Dialogue is not displayed as a book page. Checked in the browser: the academy head's lines use the lower dialogue panel while the book stays closed. |
+| S-05 | Implement character interaction | Story | High | Verified | G-06, S-04 | Orin can approach a story character and start that character's current interaction. Checked in the browser: clicking the academy head walks Orin over and starts the invitation. A later click says the invitation was already given. |
+| S-06 | Implement the invitation | Story | High | Verified | C-12, S-04 | After the garden boss, the academy head invites Orin on the estate. Q-001 and Q-009 stay open in the text. Checked in the browser after winning the boss. The lines do not mention parents or the ceremony leader. |
 | S-07 | Implement the time jump | Story | High | Not Started | S-03, S-06 | The book moves the story forward several years and resumes at academy age, about 19. |
 | S-08 | Build the academy environment | Story | High | Not Started | F-08 | A placeholder castle can be explored without minimap navigation. The intact arrival state is separate from the damaged state. |
 | S-09 | Implement academy arrival | Story | High | Not Started | S-07, S-08 | Orin enters the accessible academy in a state that reads as wonder and anticipation. |
@@ -206,3 +207,4 @@ Do not add tasks that implement the following unless the owner changes the desig
 | 2026-11-15 | Owner asked for the camera to follow Orin when he moves, for clearer combat instructions, and for Milestone 4. Walking now pulls the view back onto Orin. Lesson panels name the click. Z-03, Z-04, and Z-05 marked `Verified`. Encounter 2 was not started. |
 | 2026-11-15 | Owner approved Milestone 5. C-10 and C-11 marked `Verified` after a browser run that solved the three puzzles in an order other than the fight order. The second fight had no lesson. The third started a one-pool boss placeholder. C-12 was not started. |
 | 2026-11-15 | Owner approved Milestone 6. C-12 and C-13 marked `Verified`. The boss placeholder shows a signature action before it lands, splits one health pool into two phases, and can restore the phase 2 checkpoint after defeat. No story name was added. |
+| 2026-11-15 | Owner approved Milestone 7. S-01 through S-06 marked `Verified`. The opening book enters the garden. The academy head invites Orin only after the boss. The time jump and chapter ending stay unplayed data. The academy was not built. |

@@ -311,6 +311,130 @@ canvas {
   font-weight: 700;
 }
 
+#book {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  background: rgba(42, 36, 28, 0.55);
+  pointer-events: auto;
+}
+
+#book[hidden] {
+  display: none !important;
+}
+
+.book-spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min(820px, calc(100% - 32px));
+  min-height: 360px;
+  background: #f4e4c8;
+  border: 8px solid #6b4324;
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgba(42, 36, 28, 0.35);
+  overflow: hidden;
+}
+
+.book-plate,
+.book-page {
+  padding: 22px;
+}
+
+.book-plate {
+  background: #efe0c4;
+  border-right: 2px solid #c46a2f;
+}
+
+.book-plate svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.book-page {
+  display: flex;
+  flex-direction: column;
+  color: #2a241c;
+  transform-origin: left center;
+  transition: transform 0.45s ease;
+}
+
+#book.is-turning .book-page {
+  transform: rotateY(-78deg);
+}
+
+#book-kicker {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8a3b12;
+}
+
+#book-caption {
+  margin: 16px 0 0;
+  font-size: 26px;
+  line-height: 1.35;
+}
+
+#turn-page,
+#dialogue-continue {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 999px;
+  border: 1px solid rgba(90, 62, 36, 0.3);
+  background: #fff8ec;
+  color: #2a241c;
+}
+
+#turn-page {
+  margin-top: auto;
+  align-self: flex-start;
+  padding: 8px 16px;
+}
+
+#dialogue {
+  position: fixed;
+  left: 16px;
+  bottom: 24px;
+  z-index: 25;
+  width: min(520px, calc(100% - 280px));
+  padding: 14px 16px 12px;
+  color: #2a241c;
+  background: rgba(236, 244, 236, 0.98);
+  border: 3px solid #243456;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(42, 36, 28, 0.18);
+  pointer-events: auto;
+}
+
+#dialogue[hidden] {
+  display: none !important;
+}
+
+#dialogue-speaker {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #243456;
+}
+
+#dialogue-line {
+  margin: 8px 0 0;
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+#dialogue-continue {
+  margin-top: 10px;
+  padding: 6px 12px;
+}
+
 @keyframes lesson-pulse {
   0%, 100% { box-shadow: 0 0 0 4px rgba(224, 122, 61, 0.45); }
   50% { box-shadow: 0 0 0 12px rgba(224, 122, 61, 0.12); }

@@ -27,7 +27,9 @@ The owner approved Milestone 5 on 2026-11-15. Completion count selects the encou
 
 The owner approved Milestone 6 on 2026-11-15. The boss placeholder keeps one health pool with two visible phases. Its signature action is shown for a turn before it lands. Crossing into phase 2 stores an in-memory checkpoint. The boss still has no story name.
 
-Do not start Milestone 7 until the owner approves it. Finish and verify one milestone before starting the next major milestone.
+The owner approved Milestone 7 on 2026-11-15. The game opens on the illustrated book, then enters the garden. Story events are data. After the boss, the academy head can be approached in the garden and speaks the invitation. The time jump is stored as a book event and is not played, because the academy scene is not built.
+
+Do not start Milestone 8 until the owner approves it. Finish and verify one milestone before starting the next major milestone.
 
 Run the prototype with `npm install`, then `npm run dev`. Pathfinding checks are `npm test`. The production build is `npm run build`.
 

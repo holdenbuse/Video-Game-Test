@@ -257,7 +257,11 @@ Do not invent the boss's identity, motive, or meaning to the story.
 
 ### Milestone 7 — Story presentation
 
+Built and checked in the browser on 2026-11-15.
+
 Add the illustrated-book interface, page turns, in-world dialogue, character interaction, and story triggers. Placeholder narration and artwork are allowed when they do not add events.
+
+The opening book is three placeholder pages. Turning the last page enters the garden. The control hint stays hidden until then. Story events carry their own requirements and do not start the next event. After the garden boss is won, the academy head stands in the garden. Orin walks up and the invitation is spoken in a dialogue panel, not on a book page. The lines do not name parents and do not decide whether this speaker is the ceremony leader. A second talk says the invitation was already given. The time-jump and chapter-ending pages exist as data and name their scenes. They are not played here, because the academy and Chapter 2 scenes are later milestones.
 
 ### Milestone 8 — Academy prototype
 
@@ -307,6 +311,7 @@ The prototype should eventually be playable through a browser link and must buil
 | TD-020 | 2026-11-15 | The first solved puzzle, whichever it is, starts Encounter 1. Further puzzle completions are stored and do not start Encounter 2 or the boss. | Milestone 4 allows any order. Milestone 5 is the binding of the second and third completions to their encounters. |
 | TD-021 | 2026-11-15 | Completion count binds tutorial, then the standard placeholder fight, then the one-pool boss placeholder. A second solve waits until the open fight is won. Each puzzle and encounter reward is recorded once, with no Chapter 1 XP number. | Q-011 and Q-012 are still open. The 1,780 Chapter 1 target is not a payout. Boss phases and the signature action wait for Milestone 6. |
 | TD-022 | 2026-11-15 | The garden boss placeholder uses two phases on one health pool. Its signature action is announced for a full turn, then resolves. Entering phase 2 stores an in-memory checkpoint that defeat can restore. Try again restarts the fight. | Q-012 is still open. The signature damage is a Q-015 placeholder. Writing the checkpoint into a save slot is X-07. |
+| TD-023 | 2026-11-15 | The opening book enters the garden. The invitation is an in-world dialogue that starts only after the boss flag is set. Time-jump and chapter-ending book events request `academy` and `chapter-2` and are not played until those scenes exist. | Q-001 and Q-009 stay open. The narrator is not named. Voice waits on Q-022. |
 
 ## 7.1 Consistency review (2026-11-13)
 

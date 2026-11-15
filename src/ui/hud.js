@@ -45,6 +45,11 @@ export function createHud(actions) {
   const toast = hud.querySelector('#toast');
   let remaining = 0;
 
+  function setHintHidden(hidden) {
+    const hint = hud.querySelector('#hint');
+    if (hint) hint.hidden = hidden;
+  }
+
   function showMessage(text) {
     toast.textContent = text;
     toast.classList.add('show');
@@ -57,5 +62,5 @@ export function createHud(actions) {
     if (remaining <= 0) toast.classList.remove('show');
   }
 
-  return { showMessage, update };
+  return { showMessage, update, setHintHidden };
 }

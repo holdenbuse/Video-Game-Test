@@ -1,8 +1,11 @@
 import * as THREE from 'three';
 import { createIsometricCamera } from '../camera/isometricCamera.js';
 import { createOrin } from '../characters/createOrin.js';
+import { createVisitor } from '../characters/createVisitor.js';
 import { createCombatSession } from '../combat/combat.js';
 import { createCombatView } from '../combat/combatView.js';
+import { ACADEMY_HEAD } from '../data/academyHead.js';
+import { CHAPTER_EVENTS } from '../data/chapter01Events.js';
 import { AGENT_RADIUS, GARDEN } from '../data/gardenLayout.js';
 import { PETAL_STREAMS } from '../data/petalStreamsLayout.js';
 import { createPointerInput } from '../input/pointerInput.js';
@@ -19,7 +22,10 @@ import { createFountain } from '../puzzles/createFountain.js';
 import { createMemoryFlowers } from '../puzzles/createMemoryFlowers.js';
 import { createPetalStreams } from '../puzzles/createPetalStreams.js';
 import { createRenderer, createSceneLights } from '../rendering/createRenderer.js';
+import { createStory } from '../story/story.js';
+import { createBookView } from '../ui/bookView.js';
 import { createCombatHud } from '../ui/combatHud.js';
+import { createDialogueView } from '../ui/dialogueView.js';
 import { createHud } from '../ui/hud.js';
 import { createDestinationMarker } from '../world/destinationMarker.js';
 import { createGarden } from '../world/createGarden.js';
@@ -45,6 +51,7 @@ export function createGame(host) {
 
   const view = createIsometricCamera();
   const orin = createOrin();
+  const visitor = createVisitor();
   const garden = createGarden();
   const marker = createDestinationMarker();
   const completion = createCompletionLog();
@@ -54,7 +61,7 @@ export function createGame(host) {
   const memory = createMemoryFlowers(completion);
   const world = new THREE.Group();
   world.name = 'world';
-  world.add(garden.root, puzzle.root, fountain.root, memory.root);
+  world.add(garden.root, puzzle.root, fountain.root, memory.root, visitor.mesh);
   scene.add(world, orin.mesh, marker.mesh);
 
   const nav = createNavGrid(GARDEN);
@@ -94,6 +101,7 @@ export function createGame(host) {
     } else {
       followedCombat = null;
     }
+    syncVisitor();
     if (result?.pendingEnemy) {
       window.setTimeout(() => {
         combat.runEnemyTurn();
@@ -122,7 +130,10 @@ export function createGame(host) {
       refreshCombat();
     },
     onLeave: () => {
+      const finished = combat.snapshot();
       combat.leave();
+      if (finished.kind === 'boss') story.grant('boss-defeated');
+      syncVisitor();
       const next = encounterGate.victory();
       if (next.encounter) combat.arm(encounterByKind(next.encounter));
       refreshCombat();
@@ -146,6 +157,19 @@ export function createGame(host) {
       garden.confirmPedestal();
       marker.show(GARDEN.pedestal.x, GARDEN.pedestal.z, 'yes');
       hud.showMessage(TEST_MESSAGE);
+    },
+    onCharacter: (target) => {
+      marker.hide();
+      movement.cancel();
+      visitor.setYaw(Math.atan2(movement.state.x - target.x, movement.state.z - target.z));
+      if (story.available(target.eventId)) {
+        const started = story.start(target.eventId);
+        if (started.ok) dialogue.show(started.presentation);
+        return;
+      }
+      if (story.has('invitation-done')) {
+        dialogue.show({ speaker: target.label, text: target.afterText });
+      }
     },
     onUnreachable: () => hud.showMessage(BLOCKED_MESSAGE),
   });
@@ -200,7 +224,46 @@ export function createGame(host) {
     refreshCombat(combat.previewMove(choice.cell.x, choice.cell.z));
   }
 
+  const story = createStory(CHAPTER_EVENTS, {
+    onEnter: (scene) => {
+      if (scene === 'garden') openGarden();
+    },
+  });
+  const book = createBookView({
+    onTurn: () => {
+      const result = story.advance();
+      if (result.finished) book.hide();
+      else book.show(result.presentation);
+    },
+  });
+  const dialogue = createDialogueView({
+    onContinue: () => {
+      if (!story.snapshot().active) {
+        dialogue.hide();
+        return;
+      }
+      const result = story.advance();
+      if (result.finished) dialogue.hide();
+      else dialogue.show(result.presentation);
+    },
+  });
+  const opening = story.start('opening-book');
+  if (opening.ok) book.show(opening.presentation);
+  hud.setHintHidden(true);
+
+  function openGarden() {
+    book.hide();
+    hud.setHintHidden(false);
+    syncVisitor();
+  }
+
+  function syncVisitor() {
+    const exploring = combat.snapshot().phase === 'exploring' && !story.snapshot().active;
+    visitor.setVisible(exploring && story.has('boss-defeated'));
+  }
+
   function onClick(clientX, clientY) {
+    if (story.snapshot().active || dialogue.isOpen()) return;
     const hits = pickFromPointer(view.camera, world, renderer.domElement, clientX, clientY);
     if (hits.length === 0) return;
     const phase = combat.snapshot().phase;
@@ -227,6 +290,11 @@ export function createGame(host) {
       if (outcome?.type === 'studying') hud.showMessage(MEMORY_STUDY);
       if (outcome?.type === 'look') hud.showMessage(MEMORY_LOOK);
       if (outcome?.type === 'reset') hud.showMessage(MEMORY_RESET);
+      return;
+    }
+    if (interactableId === ACADEMY_HEAD.interactableId) {
+      const result = interaction.requestCharacter(ACADEMY_HEAD);
+      if (result.ok && !result.arrived) marker.show(result.x, result.z, 'go');
       return;
     }
     if (interactableId === GARDEN.pedestal.id) {
@@ -336,6 +404,12 @@ export function createGame(host) {
       },
       combat() {
         return combat.snapshot();
+      },
+      story() {
+        return story.snapshot();
+      },
+      visitorVisible() {
+        return visitor.mesh.visible;
       },
       toast() {
         return document.querySelector('#toast')?.textContent ?? '';

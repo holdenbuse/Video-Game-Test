@@ -45,6 +45,8 @@ The narrator introduces Orin and the world. The narrator's identity is unknown. 
 
 This sequence may use illustrated pages, short captions, voice narration, and a page turn. It may not teach controls.
 
+In the current prototype, three placeholder pages play before the garden. The captions say the narrator is unnamed, that the pages tell of Orin at about eleven in a world where magic is common, and that the next page is the family garden. The control hint appears after the book closes. Voice is not in this build (Q-022).
+
 ### Sequence 2 — Childhood garden exploration
 
 Orin is about 11–12. The player explores the garden of the family estate.
@@ -124,6 +126,8 @@ Full-game boss duration of 20–30 minutes is not a requirement for this introdu
 After the garden boss, the academy's head personally visits the family estate and invites Orin to attend. This happens in the game world, not as a book page that replaces the visit.
 
 Parent presence and names are `TBD` (Q-009). Whether "head" and the later "leader" are the same person is `TBD` (Q-001).
+
+In the current prototype, the head appears in the garden only after the boss is won. Orin walks up and starts the conversation. The spoken lines use the role "Academy head," invite Orin to attend, and do not mention parents or the ceremony. Talking again does not repeat the invitation. The time jump does not play yet.
 
 ### Sequence 6 — Book time jump
 
